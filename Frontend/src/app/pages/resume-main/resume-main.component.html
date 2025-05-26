@@ -14,13 +14,24 @@
             Evaluaciones</button>
     </div>
 </div>
-<h4 class="countMain animate__animated animate__fadeIn">Número de Docentes: <span
-        id="docCount">Loading...</span></h4>
+<h4 class="countMain animate__animated animate__fadeIn">Número de Empleados: <span id="docCount">Loading...</span></h4>
 
-<select class="courseAC animate__animated animate__fadeInUp animate__delay-1s" id="courseAC" required>
-    <option>Todos los programas</option>
-    <option>Tecnología En Desarrollo De Software</option>
-    <option>Medicina</option>
-    <option>Ingenería Electrónica</option>
+<select class="typeMain animate__animated animate__fadeInUp animate__delay-1s" id="courseAC" required>
+    <option>Todos los Empleados</option>
+    <option>Administración</option>
+    <option>Producción</option>
+    <option>Calidad</option>
 </select><br>
-<div id="list" class="adds animate__animated animate__fadeIn"></div>
+
+<ul class="list">
+    <li *ngIf="" class="loading">Cargando reservas...</li>
+    <li *ngIf=""></li>
+    <li>
+        <div class="card animate__animated animate__zoomIn">
+            <img src="https://picsum.photos/200" class="card-img-top" alt="error en imagen">
+            <p class="card-title">Example name</p>
+            <button class="buttonMain animate__animated animate__pulse animate__infinite"
+                >Ver más</button>
+        </div>
+    </li>
+</ul>
