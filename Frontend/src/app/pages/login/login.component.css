@@ -1,0 +1,111 @@
+.mainName {
+    text-align: center;
+    height: 30px;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+    font-size: 75px;
+}
+
+.descrip {
+    text-align: center;
+    height: 30px;
+    font-size: 12px;
+    color: #4F959D;
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.loginT {
+    color: #222222;
+    text-shadow: 3px 3px 5px #7fa9b9;
+    margin-bottom: 7px;
+}
+
+.loginBlock {
+    margin-top: 30px;
+    height: 80vh;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+
+.boxUser1 {
+    border-radius: 15px;
+    background-color: whitesmoke;
+    border: 1.5px solid #7fa9b9;
+    color: #0D3B66;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    width: 15%;
+    height: 25px;
+    font-size: 15px;
+    margin-bottom: 14px;
+}
+
+.boxUser2 {
+    border-radius: 15px;
+    background-color: whitesmoke;
+    border: 1.5px solid #7fa9b9;
+    color: #0D3B66;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    width: 10%;
+    height: 25px;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.bUser {
+    font-family: 'Times New Roman', Times, serif;
+    border-color: #4F959D;
+    width: 5%;
+    border-radius: 10px;
+    border-width: 0.1px;
+    color: #205781;
+    background-color: whitesmoke;
+    font-size: 18px;
+    cursor: grabbing;
+}
+
+.bUser:hover {
+    box-shadow: 0 12px 16px 0 #4F959D, 0 17px 50px 0 #D5E5D5;
+    background-color: #0D3B66;
+    color: white;
+}
+
+.loadingUser {
+    display: none;
+    text-align: center;
+    height: 30px;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+@media (max-width: 767px) {
+    .boxUser1 {
+        width: 45%;
+    }
+
+    .boxUser2 {
+        width: 40%;
+    }
+
+    .bUser {
+        width: 25%;
+    }
+}
+
+@media (max-width: 1269px) and (min-width: 768px) {
+    .boxUser1 {
+        width: 20%;
+    }
+
+    .boxUser2 {
+        width: 15%;
+    }
+
+    .bUser {
+        width: 10%;
+    }
+}
