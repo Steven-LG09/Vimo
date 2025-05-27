@@ -1,0 +1,147 @@
+.mainName {
+    text-align: center;
+    height: 30px;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+    font-size: 75px;
+}
+
+.descrip {
+    text-align: center;
+    height: 30px;
+    font-size: 12px;
+    color: #4F959D;
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.personalInfo2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0%;
+    margin-right: 0%;
+}
+
+.photoH {
+    width: 50%;
+    text-align: center;
+}
+
+.mainPhoto {
+    width: 300px;
+    height: 400px;
+    border-radius: 15px;
+    box-shadow: 0 12px 16px 0 black, 0 17px 50px 0 #7fa9b9;
+}
+
+.contentInfo2 {
+    width: 50%;
+}
+
+.blockInfo {
+    display: flex;
+    height: 35px;
+}
+
+.secondName2 {
+    font-family: 'Times New Roman', Times, serif;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #4F959D;
+    font-size: 30px;
+}
+
+.secondName {
+    font-family: 'Times New Roman', Times, serif;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #4F959D;
+    font-size: 30px;
+    text-align: center;
+}
+
+.atribute {
+    width: 20%;
+    color: rgb(43, 39, 39);
+    text-shadow: 3px 3px 5px #4F959D;
+    font-weight: bold;
+}
+
+.result {
+    width: 80%;
+}
+
+.listGenere {
+    color: rgb(43, 39, 39);
+    text-shadow: 3px 3px 5px #4F959D;
+    text-align: center;
+    font-size: 20px;
+}
+
+.deleteBu {
+    width: 20%;
+    font-family: 'Times New Roman', Times, serif;
+    border-color: #ad6565;
+    border-width: 0.1px;
+    color: whitesmoke;
+    background-color: red;
+    font-size: large;
+    cursor: grabbing;
+    float: right;
+    border-radius: 10px;
+    margin-right: 2%;
+}
+
+.deleteBu:hover {
+    box-shadow: 0 12px 16px 0 black, 0 17px 50px 0 #4F959D;
+    background-color: black;
+    color: white;
+}
+
+
+@media (max-width: 1199px) and (min-width: 768px) {
+    .atribute {
+        width: 35%;
+    }
+
+    .result {
+        width: 65%;
+    }
+}
+
+@media (max-width: 767px) {
+    .personalInfo2 {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-left: 0%;
+        margin-right: 0%;
+    }
+
+    .photoH {
+        width: 100%;
+        text-align: center;
+    }
+
+    .contentInfo2 {
+        width: 100%;
+    }
+
+    .secondName2 {
+        text-align: center;
+    }
+
+    .atribute {
+        width: 30%;
+    }
+
+    .result {
+        width: 70%;
+    }
+
+    .blockInfo {
+        margin-left: 10%;
+    }
+
+    .deleteBu {
+        width: 40%;
+    }
+}

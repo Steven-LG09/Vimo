@@ -1,0 +1,96 @@
+.mainName {
+    text-align: center;
+    height: 30px;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+    font-size: 75px;
+}
+
+.descrip {
+    text-align: center;
+    height: 30px;
+    font-size: 12px;
+    color: #4F959D;
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.titleH2 {
+    text-align: center;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.titleMain {
+    text-align: center;
+    color: #4F959D;
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.areaType {
+    font-family: 'Times New Roman', Times, serif;
+    border-color: #4F959D;
+    border-radius: 10px;
+    border-width: 0.1px;
+    color: #0D3B66;
+    background-color: whitesmoke;
+    font-size: 17px;
+    text-align: center;
+}
+
+.blockCreate {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+
+.boxCreate {
+    border-radius: 15px;
+    background-color: whitesmoke;
+    border: 1.5px solid #4F959D;
+    color: #0D3B66;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    width: 15%;
+    font-size: 17px;
+    margin-top: 10px;
+}
+
+.createUserB {
+    font-family: 'Times New Roman', Times, serif;
+    border-color: #4F959D;
+    width: 10%;
+    border-radius: 10px;
+    border-width: 0.1px;
+    color: #0D3B66;
+    background-color: whitesmoke;
+    font-size: 20px;
+    cursor: grabbing;
+    margin-top: 10px;
+}
+
+.createUserB:hover {
+    box-shadow: 0 12px 16px 0 black, 0 17px 50px 0 #7fa9b9;
+    background-color: #0D3B66;
+    color: white;
+}
+
+.loading {
+    text-align: center;
+    height: 30px;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+    font-size: 15px;
+    font-weight: bold;
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .boxCreate {
+        width: 40%;
+    }
+
+    .createUserB {
+        width: 20%;
+    }
+}

@@ -1,1 +1,19 @@
-<p>create-user works!</p>
+<h1 class="mainName animate__animated animate__fadeInDown">VIMO</h1>
+<p class="descrip animate__animated animate__zoomIn">Valor, Identidad, Meríto y Oportunidad</p>
+
+<h2 class="titleH2 animate__animated animate__fadeInUp animate__delay-1s">Creación de usuario</h2>
+<h4 class="titleMain animate__animated animate__fadeInUp animate__delay-1s">
+    Número de Usuarios: <span id="docCount">Loading ...</span>
+</h4>
+<div class="blockCreate animate__animated animate__fadeInUp animate__delay-1s">
+    <select class="areaType" id="courseA" required>
+        <option selected disabled>Seleccione Un Area</option>
+        <option>Administración</option>
+        <option>Producción</option>
+        <option>Calidad</option>
+    </select>
+    <input class="boxCreate" type="number" id="newUsers"
+        placeholder="Número de Usuarios" required>
+    <button class="createUserB" id="createUser">Crear</button>
+    <p id="loadingMessage" class="loading animate__animated animate__flash" >Loading...</p>
+</div>
