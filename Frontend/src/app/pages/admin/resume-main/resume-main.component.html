@@ -1,37 +1,39 @@
 <h1 class="mainName animate__animated animate__fadeInDown">VIMO</h1>
-<p class="descrip animate__animated animate__fadeInUp">Valor, Identidad, Mérito y Oportunidad</p>
+<p class="descrip animate__animated animate__fadeInDown">Valor, Identidad, Mérito y Oportunidad</p>
 
 <div class="headerHDV animate__animated animate__fadeIn">
     <div class="headerBlock">
-        <button class="headButton animate__animated animate__pulse animate__infinite" id="createPage">Crear
+        <button class="headButton animate__animated animate__pulse animate__infinite" id="createPage"
+            routerLink="/createUser">Crear
             Usuario</button>
     </div>
     <div class="headerBlock">
         <h2 class="titleMain animate__animated animate__fadeIn">Hojas de vida</h2>
     </div>
     <div class="headerBlock">
-        <button class="headButton animate__animated animate__pulse animate__infinite" id="evaPage">Sistema de
-            Evaluaciones</button>
+        <button class="headButton animate__animated animate__pulse animate__infinite" id="evaPage"
+            routerLink="/stadistics">Sistema
+            Estadístico</button>
     </div>
 </div>
 <h4 class="countMain animate__animated animate__fadeIn">Número de Empleados: <span id="docCount">Loading...</span></h4>
 
-<select class="typeMain animate__animated animate__fadeInUp animate__delay-1s" id="courseAC" required>
+<select class="typeMain animate__animated animate__fadeInUp " id="courseAC" required>
     <option>Todos los Empleados</option>
     <option>Administración</option>
     <option>Producción</option>
     <option>Calidad</option>
 </select><br>
 
-<ul class="list">
+<ul class="list animate__animated animate__zoomIn animate__delay-1s">
     <li *ngIf="" class="loading">Cargando reservas...</li>
     <li *ngIf=""></li>
     <li>
-        <div class="card animate__animated animate__zoomIn">
+        <div class="card">
             <img src="https://picsum.photos/200" class="card-img-top" alt="error en imagen">
             <p class="card-title">Example name</p>
-            <button class="buttonMain animate__animated animate__pulse animate__infinite"
-                >Ver más</button>
+            <button class="buttonMain animate__animated animate__pulse animate__infinite" routerLink="/resumeInfo">Ver
+                más</button>
         </div>
     </li>
 </ul>

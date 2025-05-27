@@ -46,7 +46,6 @@
 }
 
 .countMain {
-    /* used */
     margin-top: 1%;
     text-align: center;
     height: 25px;
@@ -55,7 +54,6 @@
 }
 
 .typeMain {
-    /* used */
     display: block;
     font-family: 'Times New Roman', Times, serif;
     border-color: #7fa9b9;
@@ -68,48 +66,55 @@
     margin: 0 auto;
 }
 
-.headButton:hover{
-    box-shadow: 0 12px 16px 0 #7fa9b9, 0 17px 50px 0 #D5E5D5;
+.headButton:hover,
+.buttonMain:hover {
+    box-shadow: 0 12px 16px 0 black, 0 17px 50px 0 #3674B5;
     background-color: #0D3B66;
     color: white;
 }
 
 .list {
+    display: flex;
     list-style-type: none;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.card{ 
+.card {
     width: 15rem;
     height: 23rem;
-    border-radius: 10px; 
-    border: 2px solid #3674B5;
-    background-color: #d5dde5;
-    box-shadow: 0 12px 16px 0 #3674B5, 0 17px 50px 0 #9ACBD0; 
-    margin-bottom: 10px; 
+    border-radius: 10px;
+    border: 2px solid #7fa9b9;
+    background-color: #0D3B66;
+    box-shadow: 0 12px 16px 0 black, 0 17px 50px 0 #4F959D;
+    margin-bottom: 10px;
     margin-right: 5px;
 }
-.card-img-top{ 
-    width: 15rem; 
+
+.card-img-top {
+    width: 15rem;
     height: 18rem;
-    border-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
-.card-title{ 
+
+.card-title {
     margin-top: -3px;
     height: 10px;
     font-family: 'Times New Roman', Times, serif;
-    color: #205781;
-    text-shadow: 3px 3px 5px #9ACBD0;
+    color: #7fa9b9;
+    text-shadow: 3px 3px 5px #3674B5;
     font-size: 20px;
     margin-left: 5%;
 }
 
-.buttonMain{ 
+.buttonMain {
     font-family: 'Times New Roman', Times, serif;
-    border-color: #3674B5;
+    border-color: #4F959D;
     width: 50%;
     border-radius: 10px;
     border-width: 0.1px;
-    color: #3674B5;
+    color: #0D3B66;
     background-color: whitesmoke;
     font-size: large;
     cursor: grabbing;
