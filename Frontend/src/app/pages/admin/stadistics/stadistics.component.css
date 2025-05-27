@@ -1,0 +1,77 @@
+.mainName {
+    text-align: center;
+    height: 30px;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+    font-size: 75px;
+}
+
+.descrip {
+    text-align: center;
+    height: 30px;
+    font-size: 12px;
+    color: #4F959D;
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.secondName {
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #4F959D;
+    text-align: center;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    width: 15rem;
+    height: 18rem;
+    border-radius: 10px;
+    border: 2px solid #7fa9b9;
+    background-color: #7fa9b9;
+    box-shadow: 0 12px 16px 0 black, 0 17px 50px 0 #4F959D;
+    margin-bottom: 10px;
+    margin-right: 15px;
+}
+
+.card-img-top {
+    width: 15rem;
+    height: 13rem;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-title {
+    margin-top: 5px;
+    height: 10px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #3674B5;
+    font-size: 17px;
+    margin-left: 5%;
+    font-weight: bold;
+}
+
+.buttonMain {
+    font-family: 'Times New Roman', Times, serif;
+    border-color: #4F959D;
+    width: 50%;
+    border-radius: 10px;
+    border-width: 0.1px;
+    color: #0D3B66;
+    background-color: whitesmoke;
+    font-size: large;
+    cursor: grabbing;
+    float: right;
+    margin-top: 4%;
+    margin-right: 3%;
+}
+
+.buttonMain:hover {
+    box-shadow: 0 12px 16px 0 black, 0 17px 50px 0 #3674B5;
+    background-color: #0D3B66;
+    color: white;
+}

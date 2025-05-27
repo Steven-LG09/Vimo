@@ -4,6 +4,7 @@ import { ResumeMainComponent } from './pages/admin/resume-main/resume-main.compo
 import { CreateUserComponent } from './pages/admin/create-user/create-user.component';
 import { StadisticsComponent } from './pages/admin/stadistics/stadistics.component';
 import { ResumeInfoComponent } from './pages/admin/resume-info/resume-info.component';
+import { StatsInfoComponent } from './pages/admin/stats-info/stats-info.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -11,4 +12,5 @@ export const routes: Routes = [
   { path: 'createUser', component: CreateUserComponent },
   { path: 'stadistics', component: StadisticsComponent },
   { path: 'resumeInfo', component: ResumeInfoComponent },
+  { path: 'statsInfo', component: StatsInfoComponent },
 ];
