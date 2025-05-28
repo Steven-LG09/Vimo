@@ -1,0 +1,224 @@
+<h1 class="mainName animate__animated animate__fadeInDown">VIMO</h1>
+<p class="descrip animate__animated animate__fadeInDown">Valor, Identidad, Mérito y Oportunidad</p>
+
+<h2 class="secondName animate__animated animate__zoomIn">Sistema de Hojas de Vida</h2>
+<h3 class="thirdName animate__animated animate__zoomIn animate__delay-1s">Información Personal</h3>
+<p class="infoText animate__animated animate__fadeIn animate__delay-1s">Los campos con asteriscos(*) son obligatorios</p>
+
+<div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
+    <div class="blockInfo1">
+        <label for="nombre" class="labelInfo">Nombre Completo*</label>
+    </div>
+    <div class="blockInfo2">
+        <input class="inputInfo" type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" required>
+    </div>
+</div>
+<div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
+    <div class="blockInfo1">
+        <label for="phone" class="labelInfo">Teléfono*</label>
+    </div>
+    <div class="blockInfo2">
+        <input class="inputInfo" type="number" id="phone" name="phone" placeholder="Ingrese su teléfono" required
+            autocomplete="off">
+    </div>
+</div>
+<div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
+    <div class="blockInfo1">
+        <label for="age" class="labelInfo">Edad*</label>
+    </div>
+    <div class="blockInfo2">
+        <input class="inputInfo" type="number" id="age" name="age" placeholder="Ingrese su edad" required autocomplete="off">
+    </div>
+</div>
+<div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
+    <div class="blockInfo1">
+        <label for="email" class="labelInfo">Correo Electrónico*</label>
+    </div>
+    <div class="blockInfo2">
+        <input class="inputInfo" type="email" id="email" name="email" placeholder="Ingrese su correo" required
+            autocomplete="off">
+    </div>
+</div>
+<div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
+    <div class="blockInfo1">
+        <label for="cedula" class="labelInfo">D.I.*</label>
+    </div>
+    <div class="blockInfo2">
+        <input class="inputInfo" type="number" id="cedula" name="cedula" placeholder="Ingrese su identificación" required>
+    </div>
+</div>
+<div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
+    <div class="blockInfo1">
+        <label for="di" class="labelInfo">D.I. copia*</label>
+    </div>
+    <div class="blockInfo2">
+        <input type="file" id="di" name="di" required>
+    </div>
+</div>
+<div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
+    <div class="blockInfo1">
+        <label for="genre" class="labelInfo">Genero*</label>
+    </div>
+    <div class="blockInfo2">
+        <select class="genreS" id="genre">
+            <option>Masculino</option>
+            <option>Femenino</option>
+            <option>Otro</option>
+        </select>
+    </div>
+</div>
+<div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
+    <div class="blockInfo1">
+        <label for="nation" class="labelInfo">Nacionalidad*</label>
+    </div>
+    <div class="blockInfo2">
+        <input class="inputInfo" type="text" id="nation" name="nation" placeholder="Ingrese su nacionalidad" required>
+    </div>
+</div>
+<div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
+    <div class="blockInfo1">
+        <label for="link" class="labelInfo">Enlace a LinkedIn</label>   
+    </div>
+    <div class="blockInfo2">
+        <input class="inputInfo" type="url" id="link" name="link" placeholder="Ingrese su enlace(Opcional)">
+    </div>
+</div>
+<div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
+    <div class="blockInfo1">
+        <label for="photo" class="labelInfo">Foto HVD*</label>
+    </div>
+    <div class="blockInfo2">
+        <input type="file" id="photo" name="photo" required>
+    </div>
+</div>
+
+<p id="error-message" class="errorFile"></p>
+
+<h2 class="secondName animate__animated animate__zoomIn">Formación Academica</h2>
+<p class="loginT4 animate__animated animate__fadeIn">Ingrese únicamente sus estudios formales (como títulos o grados
+    académicos).
+    No incluir cursos, seminarios u otras capacitaciones.</p>
+<div class="blockF animate__animated animate__zoomIn">
+    <div class="block1l">
+        <label for="studies" class="loginT2">Agregar título*</label><br>
+        <label for="place" class="loginT2">Institución*</label><br>
+    </div>
+    <div class="block1l2">
+        <input class="box2" type="text" id="studies" name="studies" placeholder="Ingrese su título" required><br>
+        <input class="box2" type="text" id="place" name="place" placeholder="Ingrese la institución de ejecución"
+            required><br>
+    </div>
+</div>
+<button id="addStudy" class="bCreate2">Añadir Estudio</button>
+<h4 class="thirdName">Lista de Estudios</h4>
+<div id="study-list"></div>
+<h4 class="thirdName">Agregar certificados de estudios relacionados</h4>
+<p class="loginT4">Ingrese todos los documentos juntos, antes de adjuntar los documentos, por favor
+    colocarlos en una misma carpeta. Si es necesario, utilice Ctrl + Click para seleccionar los documentos
+    necesarios.
+    El tamaño máximo de cada archivo no debe superar 1MB.</p>
+<div class="blockF">
+    <div class="block1l">
+        <label for="degree" class="loginT2">Certificados*</label>
+    </div>
+    <div class="block1l2">
+        <input type="file" id="degree" name="degree" multiple required>
+    </div>
+</div>
+<ul id="fileList" class="listFile"></ul>
+<p id="error-message2" class="errorFile"></p>
+
+<h2 class="secondName">Experiencia Laboral</h2>
+<div class="blockF">
+    <div class="block1l">
+        <label for="entity" class="loginT2">Empresa o Entidad*</label><br>
+        <label for="city" class="loginT2">Ciudad*</label><br>
+        <label for="telephone" class="loginT2">Teléfono*</label><br>
+        <label for="time" class="loginT2">Tiempo Laborado*</label><br>
+        <label for="role" class="loginT2">Cargo*</label><br>
+        <label for="contract" class="loginT2">Tipo de contrato*</label><br>
+    </div>
+    <div class="block1l2">
+        <input class="box2" type="text" id="entity" name="entity"
+            placeholder="Ingrese el nombre de la empresa o la entidad" required><br>
+        <input class="box2" type="text" id="city" name="city" placeholder="Ingrese la ciudad" required><br>
+        <input class="box2" type="number" id="telephone" name="telephone" placeholder="Ingrese el télefono"
+            required><br>
+        <input class="box2" type="number" id="time" name="time" placeholder="Ingrese el tiempo laborado en meses"
+            required><br>
+        <input class="box2" type="text" id="role" name="role" placeholder="Ingrese el cargo ejecutado" required><br>
+        <input class="box2" type="text" id="contract" name="contract" placeholder="Ingrese el tipo de contrato"
+            required><br>
+    </div>
+</div>
+<br>
+<button id="addJob" class="bCreate2">Añadir Experiencia</button>
+<h4 class="thirdName">Lista de trabajos</h4>
+<div id="job-list"></div>
+
+<h2 class="secondName">Idiomas</h2>
+<div class="blockF">
+    <div class="block1l">
+        <label for="language" class="loginT2">Agregar idioma</label><br>
+        <label for="languageLevel" class="loginT2">Nivel</label>
+    </div>
+    <div class="block1l2">
+        <input class="box2" type="text" id="language" name="language" placeholder="Ingrese el idioma que sabe"
+            required><br>
+        <select class="genreS" id="languageLevel">
+            <option>Nativo</option>
+            <option>A1</option>
+            <option>A2</option>
+            <option>B1</option>
+            <option>B2</option>
+            <option>C1</option>
+            <option>C2</option>
+        </select><br>
+    </div>
+</div>
+<button id="addLanguage" class="bCreate2">Añadir Idioma</button>
+<h4 class="thirdName">Lista de Idiomas</h4>
+<div id="language-list"></div>
+
+<h2 class="secondName">Habilidades Técnicas</h2>
+<div class="blockF">
+    <div class="block1l">
+        <label for="skill" class="loginT2">Agregar habilidad</label><br>
+        <label for="skillLevel" class="loginT2">Nivel</label>
+    </div>
+    <div class="block1l2">
+        <input class="box2" type="text" id="skill" name="skill" placeholder="Ingrese la habilidad que tiene"><br>
+        <select class="genreS" id="skillLevel">
+            <option>Principiante</option>
+            <option>Intermedio</option>
+            <option>Avanzado</option>
+        </select><br>
+    </div>
+</div>
+<button id="addSkill" class="bCreate2">Añadir Habilidad</button>
+<h4 class="thirdName">Lista de Habilidades</h4>
+<div id="skill-list"></div>
+
+<p class="end">Declaro que he leído y acepto la <a href="" target="_blank">Política de
+        Privacidad</a> del sistema,
+    y autorizo el tratamiento de mis datos personales conforme a la Ley 1581 de 2012 y el Decreto 1377 de 2013</p>
+<div class="blockF">
+    <div class="block1l">
+        <label for="signature" class="loginT2">Firma*</label>
+    </div>
+    <div class="block1l2">
+        <input type="file" id="signature" name="signature">
+    </div>
+</div>
+<p id="error-message3" class="errorFile"></p>
+
+<select class="courseAC animate__animated animate__fadeInUp animate__delay-1s" id="courseAC" required>
+    <option selected disabled>Seleccione Un Programa Académico</option>
+    <option>Tecnología En Desarrollo De Software</option>
+    <option>Medicina</option>
+    <option>Ingenería Electrónica</option>
+</select><br>
+
+
+<p id="loadingMessage" class="secondName animate__animated animate__flash" style="display: none;">Loading...</p>
+<button id="saveData" class="bCreate2 animate__animated animate__pulse animate__infinite">Enviar</button>

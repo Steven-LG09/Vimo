@@ -3,8 +3,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { ResumeMainComponent } from './pages/admin/resume-main/resume-main.component';
 import { CreateUserComponent } from './pages/admin/create-user/create-user.component';
 import { StadisticsComponent } from './pages/admin/stadistics/stadistics.component';
-import { ResumeInfoComponent } from './pages/admin/resume-info/resume-info.component';
-import { StatsInfoComponent } from './pages/admin/stats-info/stats-info.component';
+import { ResumeInfoComponent } from './pages/reusable/resume-info/resume-info.component';
+import { StatsInfoComponent } from './pages/reusable/stats-info/stats-info.component';
+import { CreateComponent } from './pages/employee/create/create.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -13,4 +14,5 @@ export const routes: Routes = [
   { path: 'stadistics', component: StadisticsComponent },
   { path: 'resumeInfo', component: ResumeInfoComponent },
   { path: 'statsInfo', component: StatsInfoComponent },
+  { path: 'create', component: CreateComponent },
 ];

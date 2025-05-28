@@ -1,0 +1,28 @@
+.mainName {
+    text-align: center;
+    height: 30px;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+    font-size: 75px;
+}
+
+.descrip {
+    text-align: center;
+    height: 30px;
+    font-size: 12px;
+    color: #4F959D;
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.typeMain {
+    display: block;
+    font-family: 'Times New Roman', Times, serif;
+    border-color: #7fa9b9;
+    border-radius: 10px;
+    border-width: 0.1px;
+    color: #0D3B66;
+    background-color: whitesmoke;
+    font-size: 17px;
+    text-align: center;
+    margin: 0 auto;
+}

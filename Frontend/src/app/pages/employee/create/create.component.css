@@ -1,0 +1,71 @@
+.mainName {
+    text-align: center;
+    height: 30px;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+    font-size: 75px;
+}
+
+.descrip {
+    text-align: center;
+    height: 30px;
+    font-size: 12px;
+    color: #4F959D;
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.secondName{ 
+    text-align: center;
+    height: 30px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.thirdName{ 
+    text-align: center;
+    height: 30px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #4F959D;
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.infoText{
+    color: rgb(39, 37, 37);
+    text-shadow: 3px 3px 5px #7fa9b9 ;
+    text-align: center;
+}
+
+.blockInfo{
+    display: flex;
+    justify-items: center;
+    height: 30px;
+}
+
+.blockInfo1{
+    width: 40%;
+    text-align: right;
+}
+
+.blockInfo2{
+    width: 60%;
+    text-align: left;
+    margin-left: 5px;
+}
+
+.labelInfo{ 
+    color: rgb(39, 37, 37);
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.inputInfo{ 
+    border-radius: 10px;
+    background-color: whitesmoke;
+    border: 2px solid #4F959D;
+    color: #0D3B66;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    text-align: center;
+    width: 50%;
+    height: 17px;
+}
