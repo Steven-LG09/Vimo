@@ -14,7 +14,7 @@
     text-shadow: 3px 3px 5px #7fa9b9;
 }
 
-.secondName{ 
+.secondName {
     text-align: center;
     height: 30px;
     font-family: 'Times New Roman', Times, serif;
@@ -22,7 +22,15 @@
     text-shadow: 3px 3px 5px #7fa9b9;
 }
 
-.thirdName{ 
+.loading {
+    text-align: center;
+    font-size: 30px;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+    display: none;
+}
+
+.thirdName {
     text-align: center;
     height: 30px;
     font-family: 'Times New Roman', Times, serif;
@@ -30,35 +38,35 @@
     text-shadow: 3px 3px 5px #7fa9b9;
 }
 
-.infoText{
+.infoText {
     color: rgb(39, 37, 37);
-    text-shadow: 3px 3px 5px #7fa9b9 ;
+    text-shadow: 3px 3px 5px #7fa9b9;
     text-align: center;
 }
 
-.blockInfo{
+.blockInfo {
     display: flex;
     justify-items: center;
     height: 30px;
 }
 
-.blockInfo1{
+.blockInfo1 {
     width: 40%;
     text-align: right;
 }
 
-.blockInfo2{
+.blockInfo2 {
     width: 60%;
     text-align: left;
     margin-left: 5px;
 }
 
-.labelInfo{ 
+.labelInfo {
     color: rgb(39, 37, 37);
     text-shadow: 3px 3px 5px #7fa9b9;
 }
 
-.inputInfo{ 
+.inputInfo {
     border-radius: 10px;
     background-color: whitesmoke;
     border: 2px solid #4F959D;
@@ -68,4 +76,75 @@
     text-align: center;
     width: 50%;
     height: 17px;
+}
+
+.typeGenre {
+    font-family: 'Times New Roman', Times, serif;
+    border-color: #7fa9b9;
+    border-radius: 10px;
+    border-width: 0.1px;
+    color: #0D3B66;
+    background-color: whitesmoke;
+    font-size: 15px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.buttonBlock {
+    display: flex;
+    justify-content: center;
+}
+
+.addButton {
+    font-family: 'Times New Roman', Times, serif;
+    border-color: #4F959D;
+    width: 15%;
+    border-radius: 10px;
+    border-width: 0.1px;
+    color: #0D3B66;
+    background-color: whitesmoke;
+    font-size: 15px;
+    cursor: grabbing;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.addDataB {
+    font-family: 'Times New Roman', Times, serif;
+    border-color: #4F959D;
+    width: 25%;
+    border-radius: 10px;
+    border-width: 0.1px;
+    color: #0D3B66;
+    background-color: whitesmoke;
+    font-size: 25px;
+    cursor: grabbing;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.addButton:hover,
+.addDataB:hover {
+    box-shadow: 0 12px 16px 0 black, 0 17px 50px 0 #7fa9b9;
+    background-color: #0D3B66;
+    color: white;
+}
+
+@media (max-width: 767px) {
+    .inputInfo {
+        width: 90%;
+    }
+
+    .typeGenre {
+        font-size: 12px;
+    }
+
+    .infoText {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+    .addButton{
+        width: 35%;
+    }
 }
