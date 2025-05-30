@@ -3,6 +3,14 @@ import { RouterModule, Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
+
+interface Study {
+  title: string;
+  type: string;
+  institution: string;
+  certificate: File;
+}
+
 @Component({
   standalone: true,
   selector: 'app-create',
@@ -10,7 +18,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './create.component.html',
   styleUrl: './create.component.css'
 })
+
 export class CreateComponent {
+  studies: Study[] = [];
+
   // Referencias a los inputs del HTML
   @ViewChild('name') nameRef!: ElementRef<HTMLInputElement>;
   @ViewChild('phone') phoneRef!: ElementRef<HTMLInputElement>;
@@ -33,6 +44,69 @@ export class CreateComponent {
     if (input.files && input.files.length > 0) {
       this.files[fieldName] = input.files[0];
     }
+  }
+
+  addStudy(): void {
+    const title = (document.getElementById('studies') as HTMLInputElement).value;
+    const type = (document.getElementById('studyType') as HTMLSelectElement).value;
+    const place = (document.getElementById('place') as HTMLInputElement).value;
+    const certInput = document.getElementById('certificate') as HTMLInputElement;
+
+    if (!title || !type || !place || !certInput.files?.length) {
+      alert('Debes completar todos los campos del estudio.');
+      return;
+    }
+
+    const newStudy: Study = {
+      title,
+      type,
+      institution: place,
+      certificate: certInput.files[0]
+    };
+
+    this.studies.push(newStudy);
+
+    //Limpiar los inputs después de añadir
+    (document.getElementById('studies') as HTMLInputElement).value = '';
+    (document.getElementById('studyType') as HTMLSelectElement).selectedIndex = 0;
+    (document.getElementById('place') as HTMLInputElement).value = '';
+    certInput.value = '';
+
+    this.updateStudyListUI(); // Para mostrar los estudios añadidos en pantalla
+  }
+
+  updateStudyListUI(): void {
+    const list = document.getElementById('study-list')!;
+    list.innerHTML = ''; // Clear previous list
+
+    this.studies.forEach((study, index) => {
+      const div = document.createElement('div');
+      div.classList.add('study-item'); // Optional class for styling
+
+      div.innerHTML = `
+      <div class="dinamicLists">
+        <p><strong>${index + 1}.</strong> Título como ${study.title}, de tipo ${study.type} y fue realizado en ${study.institution}</p> 
+        <em>Archivo:</em> <span>${study.certificate.name}</span><br>
+        <button class="delete-btn" data-index="${index}">Eliminar</button>
+      </div>
+    `;
+
+      list.appendChild(div);
+    });
+
+    // Attach click listener to delete buttons
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const index = +((btn as HTMLButtonElement).dataset['index']!);
+        this.deleteStudy(index);
+      });
+    });
+  }
+
+  deleteStudy(index: number): void {
+    this.studies.splice(index, 1); // Remove from array
+    this.updateStudyListUI();      // Refresh list
   }
 
   // Función que se ejecuta al hacer clic en el botón "Enviar"
