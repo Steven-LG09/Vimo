@@ -11,7 +11,7 @@
         <label for="nombre" class="labelInfo">Nombre Completo*</label>
     </div>
     <div class="blockInfo2">
-        <input class="inputInfo" type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" required>
+        <input class="inputInfo" #name type="text" id="nombre" name="nombre" placeholder="Ingrese su nombre" required>
     </div>
 </div>
 <div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
@@ -19,7 +19,7 @@
         <label for="phone" class="labelInfo">Teléfono*</label>
     </div>
     <div class="blockInfo2">
-        <input class="inputInfo" type="number" id="phone" name="phone" placeholder="Ingrese su teléfono" required
+        <input class="inputInfo" #phone type="number" id="phone" name="phone" placeholder="Ingrese su teléfono" required
             autocomplete="off">
     </div>
 </div>
@@ -28,7 +28,7 @@
         <label for="age" class="labelInfo">Edad*</label>
     </div>
     <div class="blockInfo2">
-        <input class="inputInfo" type="number" id="age" name="age" placeholder="Ingrese su edad" required
+        <input class="inputInfo" #age type="number" id="age" name="age" placeholder="Ingrese su edad" required
             autocomplete="off">
     </div>
 </div>
@@ -37,7 +37,7 @@
         <label for="email" class="labelInfo">Correo Electrónico*</label>
     </div>
     <div class="blockInfo2">
-        <input class="inputInfo" type="email" id="email" name="email" placeholder="Ingrese su correo" required
+        <input class="inputInfo" #email type="email" id="email" name="email" placeholder="Ingrese su correo" required
             autocomplete="off">
     </div>
 </div>
@@ -46,7 +46,7 @@
         <label for="cedula" class="labelInfo">D.I.*</label>
     </div>
     <div class="blockInfo2">
-        <input class="inputInfo" type="number" id="cedula" name="cedula" placeholder="Ingrese su identificación"
+        <input class="inputInfo" #ide type="number" id="cedula" name="cedula" placeholder="Ingrese su identificación"
             required>
     </div>
 </div>
@@ -55,7 +55,7 @@
         <label for="di" class="labelInfo">D.I. copia*</label>
     </div>
     <div class="blockInfo2">
-        <input type="file" id="di" name="di" required>
+        <input type="file" id="di" name="di" required (change)="onFileSelected($event, 'ide')">
     </div>
 </div>
 <div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
@@ -63,7 +63,7 @@
         <label for="genre" class="labelInfo">Genero*</label>
     </div>
     <div class="blockInfo2">
-        <select class="typeGenre" id="genre">
+        <select class="typeGenre" id="genre" #genre>
             <option>Masculino</option>
             <option>Femenino</option>
             <option>Otro</option>
@@ -75,7 +75,8 @@
         <label for="nation" class="labelInfo">Nacionalidad*</label>
     </div>
     <div class="blockInfo2">
-        <input class="inputInfo" type="text" id="nation" name="nation" placeholder="Ingrese su nacionalidad" required>
+        <input #nationality class="inputInfo" type="text" id="nation" name="nation"
+            placeholder="Ingrese su nacionalidad" required>
     </div>
 </div>
 <div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
@@ -83,7 +84,7 @@
         <label for="link" class="labelInfo">Enlace a LinkedIn</label>
     </div>
     <div class="blockInfo2">
-        <input class="inputInfo" type="url" id="link" name="link" placeholder="Ingrese su enlace(Opcional)">
+        <input #linkedin class="inputInfo" type="url" id="link" name="link" placeholder="Ingrese su enlace(Opcional)">
     </div>
 </div>
 <div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
@@ -91,7 +92,7 @@
         <label for="photo" class="labelInfo">Foto HVD*</label>
     </div>
     <div class="blockInfo2">
-        <input type="file" id="photo" name="photo" required>
+        <input type="file" id="photo" name="photo" required (change)="onFileSelected($event, 'photo')">
     </div>
 </div>
 
@@ -370,8 +371,9 @@
 </div>
 
 
-<p id="loadingMessage" class="loading animate__animated animate__flash">Loading...</p>
+<p id="loadingMessage" class="loading animate__animated animate__flash" *ngIf="loadingMessage">Loading...</p>
 
 <div class="buttonBlock animate__animated animate__fadeInUp nimate__delay-1s">
-    <button id="saveData" class="addDataB animate__animated animate__pulse animate__infinite">Enviar</button>
+    <button id="saveData" class="addDataB animate__animated animate__pulse animate__infinite"
+        (click)="saveData()">Enviar</button>
 </div>

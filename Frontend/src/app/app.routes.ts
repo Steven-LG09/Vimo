@@ -6,6 +6,7 @@ import { StadisticsComponent } from './pages/admin/stadistics/stadistics.compone
 import { ResumeInfoComponent } from './pages/reusable/resume-info/resume-info.component';
 import { StatsInfoComponent } from './pages/reusable/stats-info/stats-info.component';
 import { CreateComponent } from './pages/employee/create/create.component';
+import { ThanksComponent } from './pages/reusable/thanks/thanks.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -15,4 +16,5 @@ export const routes: Routes = [
   { path: 'resumeInfo', component: ResumeInfoComponent },
   { path: 'statsInfo', component: StatsInfoComponent },
   { path: 'create', component: CreateComponent },
+  { path: 'thanks', component: ThanksComponent },
 ];

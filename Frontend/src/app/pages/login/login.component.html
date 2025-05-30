@@ -3,19 +3,13 @@
 
 <div class="loginBlock animate__animated animate__fadeIn animate__delay-1s">
     <label for="user" class="loginT">User</label>
-    <input class="boxUser1 " type="text" id="user" name="user"
-        placeholder="Enter your User">
+    <input class="boxUser1" #user type="text" id="user" name="user" placeholder="Enter your User">
 
     <label for="password" class="loginT">Password</label>
-    <input class="boxUser2" type="password" id="password" name="password"
-        placeholder="Enter your Password">
+    <input class="boxUser2" #password type="password" id="password" name="password" placeholder="Enter your Password">
 
-    <button class="bUser animate__animated animate__pulse animate__infinite" id="login" routerLink="/resumeMain">Log
-        In</button>
+    <button class="bUser animate__animated animate__pulse animate__infinite" id="login"
+        (click)="login()">Entrar</button>
 
-        
-    <button class="bUser animate__animated animate__pulse animate__infinite" id="login" routerLink="/create">Log
-        In</button>
-
-    <p id="loadingMessage" class="loadingUser animate__animated animate__flash">Loading...</p>
+    <p id="loadingMessage" class="loadingUser animate__animated animate__flash" *ngIf="loadingMessage">Loading...</p>
 </div>
