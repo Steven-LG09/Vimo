@@ -129,6 +129,12 @@ export class CreateComponent {
       return;
     }
 
+    if (this.studies.length === 0) {
+      alert('Debes agregar al menos un estudio antes de enviar el formulario.');
+      return;
+    }
+
+
     uploadData.append('name', name);
     uploadData.append('phone', phone);
     uploadData.append('age', age);
@@ -142,6 +148,17 @@ export class CreateComponent {
     Object.keys(this.files).forEach(key => {
       uploadData.append(key, this.files[key]);
     });
+
+    this.studies.forEach((study, index) => {
+      if (study.certificate instanceof File) {
+        uploadData.append(`studies[${index}][certificate]`, study.certificate);
+      }
+    });
+
+
+    // Agregar estudios al FormData
+    uploadData.append('studies', JSON.stringify(this.studies));
+
 
     // Mostramos el mensaje de carga
     this.loadingMessage = true;

@@ -32,12 +32,27 @@ const emploSchema = new mongoose.Schema({
     genre: String,
     nationality: String,
     linkedin: String,
+    studies: [{
+        title: {
+            type: String,
+            required: true
+        },
+        type: {
+            type: String,
+            required: true
+        },
+        institution: {
+            type: String,
+            required: true
+        },
+        certificate: {
+            type: String,
+            default: null
+        }
+    }],
     files: {
-        ide: [{
-            originalName: String,
-            url: String
-        }],
-        photo: [{
+        type: Map,
+        of: [{
             originalName: String,
             url: String
         }]
@@ -79,17 +94,6 @@ async function makeFilePublic(fileId) {
     return result.data.webViewLink;
 }
 
-
-// Accept multiple file fields with different names
-const uploadFields = upload.fields([{
-        name: 'ide',
-        maxCount: 1
-    },
-    {
-        name: 'photo',
-        maxCount: 1
-    }
-]);
 
 app.get('/', (req, res) => {
     res.send('Servidor funcionando correctamente');
@@ -140,7 +144,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.post('/create', uploadFields, async (req, res) => {
+app.post('/create', upload.any(), async (req, res) => {
     try {
         const {
             name,
@@ -153,23 +157,43 @@ app.post('/create', uploadFields, async (req, res) => {
             linkedin
         } = req.body;
 
-        const files = req.files;
-
-        if (!files || Object.keys(files).length === 0) {
+        if (!name || !phone || !age || !email || !ide || !genre || !nationality) {
             return res.status(400).json({
-                error: "No files uploaded"
+                error: "Missing required fields"
             });
         }
-        if (!name || !phone || !age || !email || !ide || !genre || !nationality) return res.status(400).json({
-            error: "Missing required fields"
-        });
+
+        // Obtener estudios raw (puede venir como string JSON o ya objeto)
+        let studiesRaw = req.body.studies;
+
+        // Parsear sólo si viene como string
+        if (typeof studiesRaw === 'string') {
+            try {
+                studiesRaw = JSON.parse(studiesRaw);
+            } catch (err) {
+                return res.status(400).json({
+                    error: 'Invalid studies format (JSON parse failed)'
+                });
+            }
+        }
+
+        // Convertir a array si no lo es (por si viene como objeto con keys numéricas)
+        if (!Array.isArray(studiesRaw)) {
+            studiesRaw = Object.values(studiesRaw || {});
+        }
+
+        // Validar que haya al menos un estudio
+        if (!studiesRaw.length) {
+            return res.status(400).json({
+                error: 'At least one valid study is required'
+            });
+        }
 
         const uploadedFiles = {};
 
-        // Loop through each file field (e.g., profilePic, cvFile, etc.)
-        for (const fieldName in files) {
-            const fileArray = files[fieldName]; // Always an array
-            for (const file of fileArray) {
+        // Procesar archivos generales (excluye los de estudios)
+        for (const file of req.files) {
+            if (!file.fieldname.startsWith('studies[')) {
                 const fileMetadata = {
                     name: file.originalname,
                     parents: [process.env.DRIVE_FOLDER_ID],
@@ -189,42 +213,82 @@ app.post('/create', uploadFields, async (req, res) => {
                 const fileId = response.data.id;
                 const publicUrl = await makeFilePublic(fileId);
 
-                // Store using fieldName as the key
-                if (!uploadedFiles[fieldName]) {
-                    uploadedFiles[fieldName] = [];
+                if (!uploadedFiles[file.fieldname]) {
+                    uploadedFiles[file.fieldname] = [];
                 }
-                uploadedFiles[fieldName].push({
+                uploadedFiles[file.fieldname].push({
                     originalName: file.originalname,
                     url: publicUrl
                 });
             }
         }
 
-        const newProduct = new Employees({
-            name: name,
-            phone: phone,
-            age: age,
-            email: email,
-            ide: ide,
-            genre: genre,
-            nationality: nationality,
-            linkedin: linkedin,
-            files: uploadedFiles
+        // Procesar estudios y certificados asociados
+        const studies = await Promise.all(studiesRaw.map(async (study, index) => {
+            const certFile = req.files.find(f => f.fieldname === `studies[${index}][certificate]`);
+            let certUrl = null;
+
+            if (certFile) {
+                const fileMetadata = {
+                    name: certFile.originalname,
+                    parents: [process.env.DRIVE_FOLDER_ID],
+                };
+
+                const media = {
+                    mimeType: certFile.mimetype,
+                    body: streamifier.createReadStream(certFile.buffer),
+                };
+
+                const response = await drive.files.create({
+                    resource: fileMetadata,
+                    media: media,
+                    fields: "id",
+                });
+
+                const fileId = response.data.id;
+                certUrl = await makeFilePublic(fileId);
+            }
+
+            return {
+                title: study.title,
+                type: study.type,
+                institution: study.institution,
+                certificate: certUrl
+            };
+        }));
+
+        // Guardar en base de datos
+        const newEmployee = new Employees({
+            name,
+            phone,
+            age,
+            email,
+            ide,
+            genre,
+            nationality,
+            linkedin,
+            files: uploadedFiles,
+            studies: studies
         });
-        await newProduct.save();
+
+        await newEmployee.save();
 
         res.json({
-            message: "Upload Succesful",
+            message: "Upload Successful",
             success: true,
             redirectUrl: process.env.THANKS
         });
+
     } catch (error) {
         console.error("Upload error:", error);
         res.status(500).json({
-            message: "There's a problem",
+            message: "There's a problem"
         });
     }
 });
+
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
