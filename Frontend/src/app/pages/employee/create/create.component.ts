@@ -11,6 +11,26 @@ interface Study {
   certificate: File;
 }
 
+interface Experience {
+  company: string;
+  sector: string;
+  city: string;
+  telephone: number;
+  time: number;
+  role: string;
+  contract: string
+}
+
+interface Language {
+  language: string;
+  languageLevel: string;
+}
+
+interface Skill {
+  skill: string;
+  skillLevel: string;
+}
+
 @Component({
   standalone: true,
   selector: 'app-create',
@@ -21,6 +41,9 @@ interface Study {
 
 export class CreateComponent {
   studies: Study[] = [];
+  experiences: Experience[] = [];
+  languages: Language[] = [];
+  skills: Skill[] = [];
 
   // Referencias a los inputs del HTML
   @ViewChild('name') nameRef!: ElementRef<HTMLInputElement>;
@@ -31,6 +54,7 @@ export class CreateComponent {
   @ViewChild('genre') genreRef!: ElementRef<HTMLSelectElement>;
   @ViewChild('nationality') nationalityRef!: ElementRef<HTMLInputElement>;
   @ViewChild('linkedin') linkedinRef!: ElementRef<HTMLInputElement>;
+  @ViewChild('area') areaRef!: ElementRef<HTMLSelectElement>;
 
   files: { [key: string]: File } = {};
 
@@ -85,7 +109,7 @@ export class CreateComponent {
 
       div.innerHTML = `
       <div class="dinamicLists">
-        <p><strong>${index + 1}.</strong> Título como ${study.title}, de tipo ${study.type} y fue realizado en ${study.institution}</p> 
+        <p><strong>${index + 1}.</strong> Título como ${study.title}, de tipo ${study.type} y fue realizado en ${study.institution}.</p> 
         <em>Archivo:</em> <span>${study.certificate.name}</span><br>
         <button class="delete-btn" data-index="${index}">Eliminar</button>
       </div>
@@ -109,6 +133,191 @@ export class CreateComponent {
     this.updateStudyListUI();      // Refresh list
   }
 
+  addExperience(): void {
+    const company = (document.getElementById('entity') as HTMLInputElement).value;
+    const sector = (document.getElementById('sector') as HTMLSelectElement).value;
+    const city = (document.getElementById('city') as HTMLInputElement).value;
+    const telephone = (document.getElementById('telephone') as HTMLInputElement).value;
+    const time = (document.getElementById('time') as HTMLInputElement).value;
+    const role = (document.getElementById('role') as HTMLInputElement).value;
+    const contract = (document.getElementById('contract') as HTMLInputElement).value;
+
+    if (!company || !sector || !city || !telephone || !time || !role || !contract) {
+      alert('Debes completar todos los campos de la experiencia.');
+      return;
+    }
+
+    const newExperience: Experience = {
+      company,
+      sector,
+      city,
+      telephone: Number(telephone),
+      time: Number(time),
+      role,
+      contract
+    };
+
+    this.experiences.push(newExperience);
+
+    //Limpiar los inputs después de añadir
+    (document.getElementById('entity') as HTMLInputElement).value = '';
+    (document.getElementById('sector') as HTMLSelectElement).selectedIndex = 0;
+    (document.getElementById('city') as HTMLInputElement).value = '';
+    (document.getElementById('telephone') as HTMLInputElement).value = '';
+    (document.getElementById('time') as HTMLInputElement).value = '';
+    (document.getElementById('role') as HTMLInputElement).value = '';
+    (document.getElementById('contract') as HTMLInputElement).value = '';
+
+    this.updateExperienceListUI(); // Para mostrar las experiencias añadidas en pantalla
+  }
+
+  updateExperienceListUI(): void {
+    const list = document.getElementById('job-list')!;
+    list.innerHTML = ''; // Clear previous list
+
+    this.experiences.forEach((experience, index) => {
+      const div = document.createElement('div');
+      div.classList.add('job-item'); // Optional class for styling
+
+      div.innerHTML = `
+      <div class="dinamicLists">
+        <p><strong>${index + 1}.</strong> He trabajado en ${experience.company}, del sector ${experience.sector}, 
+        ubicado en ${experience.city}, con teléfono ${experience.telephone}, durante ${experience.time} meses, con el cargo 
+        ${experience.role} y con este contrato: ${experience.contract}.</p>
+        <button class="delete-btn" data-index="${index}">Eliminar</button>
+      </div>
+    `;
+
+      list.appendChild(div);
+    });
+
+    // Attach click listener to delete buttons
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const index = +((btn as HTMLButtonElement).dataset['index']!);
+        this.deleteExperience(index);
+      });
+    });
+  }
+
+  deleteExperience(index: number): void {
+    this.experiences.splice(index, 1); // Remove from array
+    this.updateExperienceListUI();      // Refresh list
+  }
+
+  addLanguage(): void {
+    const language = (document.getElementById('language') as HTMLInputElement).value;
+    const languageLevel = (document.getElementById('languageLevel') as HTMLSelectElement).value;
+
+    if (!language || !languageLevel) {
+      alert('Debes completar todos los campos del idioma.');
+      return;
+    }
+
+    const newLanguage: Language = {
+      language,
+      languageLevel
+    };
+
+    this.languages.push(newLanguage);
+
+    //Limpiar los inputs después de añadir
+    (document.getElementById('language') as HTMLInputElement).value = '';
+    (document.getElementById('languageLevel') as HTMLSelectElement).selectedIndex = 0;
+
+    this.updateLanguageListUI(); // Para mostrar los idiomas añadidos en pantalla
+  }
+
+  updateLanguageListUI(): void {
+    const list = document.getElementById('language-list')!;
+    list.innerHTML = ''; // Clear previous list
+
+    this.languages.forEach((language, index) => {
+      const div = document.createElement('div');
+      div.classList.add('language-item'); // Optional class for styling
+
+      div.innerHTML = `
+      <div class="dinamicLists">
+        <p><strong>${index + 1}.</strong> Se hablar ${language.language} en el nivel ${language.languageLevel}.</p> 
+        <button class="delete-btn" data-index="${index}">Eliminar</button>
+      </div>
+    `;
+
+      list.appendChild(div);
+    });
+
+    // Attach click listener to delete buttons
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const index = +((btn as HTMLButtonElement).dataset['index']!);
+        this.deleteLanguage(index);
+      });
+    });
+  }
+
+  deleteLanguage(index: number): void {
+    this.languages.splice(index, 1); // Remove from array
+    this.updateLanguageListUI();      // Refresh list
+  }
+
+  addSkill(): void {
+    const skill = (document.getElementById('skill') as HTMLInputElement).value;
+    const skillLevel = (document.getElementById('skillLevel') as HTMLSelectElement).value;
+
+    if (!skill || !skillLevel) {
+      alert('Debes completar todos los campos de la habilidad.');
+      return;
+    }
+
+    const newSkill: Skill = {
+      skill,
+      skillLevel
+    };
+
+    this.skills.push(newSkill);
+
+    //Limpiar los inputs después de añadir
+    (document.getElementById('skill') as HTMLInputElement).value = '';
+    (document.getElementById('skillLevel') as HTMLSelectElement).selectedIndex = 0;
+
+    this.updateSkillListUI(); // Para mostrar las habilidades añadidas en pantalla
+  }
+
+  updateSkillListUI(): void {
+    const list = document.getElementById('skill-list')!;
+    list.innerHTML = ''; // Clear previous list
+
+    this.skills.forEach((skill, index) => {
+      const div = document.createElement('div');
+      div.classList.add('skill-item'); // Optional class for styling
+
+      div.innerHTML = `
+      <div class="dinamicLists">
+        <p><strong>${index + 1}.</strong> ${skill.skill} en el nivel ${skill.skillLevel}.</p> 
+        <button class="delete-btn" data-index="${index}">Eliminar</button>
+      </div>
+    `;
+
+      list.appendChild(div);
+    });
+
+    // Attach click listener to delete buttons
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const index = +((btn as HTMLButtonElement).dataset['index']!);
+        this.deleteSkill(index);
+      });
+    });
+  }
+
+  deleteSkill(index: number): void {
+    this.skills.splice(index, 1); // Remove from array
+    this.updateSkillListUI();      // Refresh list
+  }
+
   // Función que se ejecuta al hacer clic en el botón "Enviar"
   saveData(): void {
     const uploadData = new FormData();
@@ -122,9 +331,10 @@ export class CreateComponent {
     const genre = this.genreRef.nativeElement.value;
     const nationality = this.nationalityRef.nativeElement.value;
     const linkedin = this.linkedinRef.nativeElement.value;
+    const area = this.areaRef.nativeElement.value;
 
     // Validamos que los campos no estén vacíos
-    if (!name || !phone || !age || !email || !ide || !genre || !nationality) {
+    if (!name || !phone || !age || !email || !ide || !genre || !nationality || !area) {
       alert('Debes ingresar los campos obligatorios.');
       return;
     }
@@ -134,6 +344,10 @@ export class CreateComponent {
       return;
     }
 
+    if (this.experiences.length === 0) {
+      alert('Debes agregar al menos una experiencia antes de enviar el formulario.');
+      return;
+    }
 
     uploadData.append('name', name);
     uploadData.append('phone', phone);
@@ -143,6 +357,7 @@ export class CreateComponent {
     uploadData.append('genre', genre);
     uploadData.append('nationality', nationality);
     uploadData.append('linkedin', linkedin);
+    uploadData.append('area', area);
 
     // Append each file by field name
     Object.keys(this.files).forEach(key => {
@@ -156,8 +371,11 @@ export class CreateComponent {
     });
 
 
-    // Agregar estudios al FormData
+    // Agregar arrays al uploadData
     uploadData.append('studies', JSON.stringify(this.studies));
+    uploadData.append('experiences', JSON.stringify(this.experiences));
+    uploadData.append('languages', JSON.stringify(this.languages));
+    uploadData.append('skills', JSON.stringify(this.skills));
 
 
     // Mostramos el mensaje de carga

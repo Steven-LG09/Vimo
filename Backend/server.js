@@ -32,6 +32,7 @@ const emploSchema = new mongoose.Schema({
     genre: String,
     nationality: String,
     linkedin: String,
+    area: String,
     studies: [{
         title: {
             type: String,
@@ -48,6 +49,56 @@ const emploSchema = new mongoose.Schema({
         certificate: {
             type: String,
             default: null
+        }
+    }],
+    experiences: [{
+        company: {
+            type: String,
+            required: true
+        },
+        sector: {
+            type: String,
+            required: true
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        telephone: {
+            type: Number,
+            required: true
+        },
+        time: {
+            type: Number,
+            required: true
+        },
+        role: {
+            type: String,
+            required: true
+        },
+        contract: {
+            type: String,
+            required: true
+        }
+    }],
+    languages: [{
+        language: {
+            type: String,
+            required: false
+        },
+        languageLevel: {
+            type: String,
+            required: false
+        }
+    }],
+    skills: [{
+        skill: {
+            type: String,
+            required: false
+        },
+        skillLevel: {
+            type: String,
+            required: false
         }
     }],
     files: {
@@ -154,17 +205,20 @@ app.post('/create', upload.any(), async (req, res) => {
             ide,
             genre,
             nationality,
-            linkedin
+            linkedin,
+            area
         } = req.body;
 
-        if (!name || !phone || !age || !email || !ide || !genre || !nationality) {
+        if (!name || !phone || !age || !email || !ide || !genre || !nationality || !area) {
             return res.status(400).json({
                 error: "Missing required fields"
             });
         }
 
-        // Obtener estudios raw (puede venir como string JSON o ya objeto)
         let studiesRaw = req.body.studies;
+        let experiencesRaw = req.body.experiences;
+        let languagesRaw = req.body.languages;
+        let skillsRaw = req.body.skills;
 
         // Parsear sólo si viene como string
         if (typeof studiesRaw === 'string') {
@@ -187,6 +241,61 @@ app.post('/create', upload.any(), async (req, res) => {
             return res.status(400).json({
                 error: 'At least one valid study is required'
             });
+        }
+
+        // Parsear sólo si viene como string
+        if (typeof experiencesRaw === 'string') {
+            try {
+                experiencesRaw = JSON.parse(experiencesRaw);
+            } catch (err) {
+                return res.status(400).json({
+                    error: 'Invalid experiences format (JSON parse failed)'
+                });
+            }
+        }
+
+        // Convertir a array si no lo es (por si viene como objeto con keys numéricas)
+        if (!Array.isArray(experiencesRaw)) {
+            experiencesRaw = Object.values(experiencesRaw || {});
+        }
+
+        // Validar que haya al menos un estudio
+        if (!experiencesRaw.length) {
+            return res.status(400).json({
+                error: 'At least one valid experience is required'
+            });
+        }
+
+        // Parsear sólo si viene como string
+        if (typeof languagesRaw === 'string') {
+            try {
+                languagesRaw = JSON.parse(languagesRaw);
+            } catch (err) {
+                return res.status(400).json({
+                    error: 'Invalid experiences format (JSON parse failed)'
+                });
+            }
+        }
+
+        // Convertir a array si no lo es (por si viene como objeto con keys numéricas)
+        if (!Array.isArray(languagesRaw)) {
+            languagesRaw = Object.values(languagesRaw || {});
+        }
+
+                // Parsear sólo si viene como string
+        if (typeof skillsRaw === 'string') {
+            try {
+                skillsRaw = JSON.parse(skillsRaw);
+            } catch (err) {
+                return res.status(400).json({
+                    error: 'Invalid experiences format (JSON parse failed)'
+                });
+            }
+        }
+
+        // Convertir a array si no lo es (por si viene como objeto con keys numéricas)
+        if (!Array.isArray(skillsRaw)) {
+            skillsRaw = Object.values(skillsRaw || {});
         }
 
         const uploadedFiles = {};
@@ -267,8 +376,12 @@ app.post('/create', upload.any(), async (req, res) => {
             genre,
             nationality,
             linkedin,
+            area,
             files: uploadedFiles,
-            studies: studies
+            studies: studies,
+            experiences: experiencesRaw,
+            languages: languagesRaw,
+            skills: skillsRaw
         });
 
         await newEmployee.save();

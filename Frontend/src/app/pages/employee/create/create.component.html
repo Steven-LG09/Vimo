@@ -152,7 +152,8 @@
     </div>
 </div>
 <div class="buttonBlock animate__animated animate__zoomIn animate__delay-1s">
-    <button id="addStudy" class="addButton animate__animated animate__pulse animate__infinite" (click)="addStudy()">Añadir Estudio</button>
+    <button id="addStudy" class="addButton animate__animated animate__pulse animate__infinite"
+        (click)="addStudy()">Añadir Estudio</button>
 </div>
 <p id="error-message2" class="errorFile"></p>
 
@@ -278,12 +279,14 @@
 </div>
 
 <div class="buttonBlock animate__animated animate__zoomIn animate__delay-1s">
-    <button id="addStudy" class="addButton animate__animated animate__pulse animate__infinite">Añadir
+    <button id="addStudy" class="addButton animate__animated animate__pulse animate__infinite"
+        (click)="addExperience()">Añadir
         Experiencia</button>
 </div>
 
 <h4 class="thirdName animate__animated animate__zoomIn animate__delay-1s">Lista de trabajos</h4>
 <div id="job-list"></div>
+<br>
 
 <h3 class="thirdName animate__animated animate__zoomIn animate__delay-1s">Idiomas</h3>
 <div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
@@ -314,10 +317,12 @@
 </div>
 
 <div class="buttonBlock animate__animated animate__zoomIn animate__delay-1s">
-    <button id="addStudy" class="addButton animate__animated animate__pulse animate__infinite">Añadir Idioma</button>
+    <button id="addStudy" class="addButton animate__animated animate__pulse animate__infinite"
+        (click)="addLanguage()">Añadir Idioma</button>
 </div>
 <h4 class="thirdName animate__animated animate__zoomIn animate__delay-1s">Lista de Idiomas</h4>
 <div id="language-list"></div>
+<br>
 
 <h3 class="thirdName animate__animated animate__zoomIn animate__delay-1s">Habilidades Técnicas</h3>
 <div class="blockInfo animate__animated animate__zoomIn animate__delay-1s">
@@ -342,10 +347,12 @@
     </div>
 </div>
 <div class="buttonBlock animate__animated animate__zoomIn animate__delay-1s">
-    <button id="addStudy" class="addButton animate__animated animate__pulse animate__infinite">Añadir Habilidad</button>
+    <button id="addStudy" class="addButton animate__animated animate__pulse animate__infinite"
+        (click)="addSkill()">Añadir Habilidad</button>
 </div>
 <h4 class="thirdName animate__animated animate__zoomIn animate__delay-1s">Lista de Habilidades</h4>
 <div id="skill-list"></div>
+<br>
 
 <p class="infoText animate__animated animate__fadeIn animate__delay-1s">Declaro que he leído y acepto la <a href=""
         target="_blank">Política de
@@ -357,14 +364,14 @@
         <label for="signature" class="loginT2">Firma*</label>
     </div>
     <div class="blockInfo2">
-        <input type="file" id="signature" name="signature">
+        <input type="file" id="signature" name="signature" required (change)="onFileSelected($event, 'signature')">
     </div>
 </div>
 
 <p id="error-message3" class="errorFile"></p>
 
 <div class="buttonBlock animate__animated animate__fadeInUp nimate__delay-1s">
-    <select class="typeGenre animate__animated animate__fadeInUp animate__delay-1s" id="courseAC" required>
+    <select class="typeGenre animate__animated animate__fadeInUp animate__delay-1s" #area id="courseAC" required>
         <option selected disabled>Seleccione Un Area</option>
         <option>Administración</option>
         <option>Producción</option>

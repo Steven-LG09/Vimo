@@ -178,4 +178,8 @@
     .addButton {
         width: 35%;
     }
+
+    ::ng-deep .dinamicLists {
+        width: 75%;
+    }
 }
