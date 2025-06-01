@@ -380,9 +380,9 @@
 </div>
 
 
-<p id="loadingMessage" class="loading animate__animated animate__flash" *ngIf="loadingMessage">Loading...</p>
-
 <div class="buttonBlock animate__animated animate__fadeInUp nimate__delay-1s">
-    <button id="saveData" class="addDataB animate__animated animate__pulse animate__infinite"
-        (click)="saveData()">Enviar</button>
+    <button id="saveData" class="addDataB animate__animated animate__pulse animate__infinite" (click)="saveData()"
+        [disabled]="loadingMessage">
+        <span *ngIf="!loadingMessage">Enviar</span>
+        <span *ngIf="loadingMessage">Loading...</span></button>
 </div>
