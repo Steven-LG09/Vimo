@@ -3,12 +3,13 @@ import dotenv from "dotenv";
 import cors from 'cors';
 import mongoose from "mongoose";
 import {
-    google
-} from "googleapis";
+    v2 as cloudinary
+} from 'cloudinary';
 import streamifier from "streamifier";
 import multer from "multer";
 
 dotenv.config();
+
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -115,39 +116,40 @@ const Employees = mongoose.models[process.env.COLLECTION_NAME] || mongoose.model
 const upload = multer({
     storage: multer.memoryStorage()
 });
-const auth = new google.auth.GoogleAuth({
-    credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS),
-    scopes: ["https://www.googleapis.com/auth/drive"],
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
 });
 
-const drive = google.drive({
-    version: "v3",
-    auth
-});
 
-async function makeFilePublic(fileId) {
-    // Set file permission to 'anyone with the link can view'
-    await drive.permissions.create({
-        fileId,
-        requestBody: {
-            role: "reader",
-            type: "anyone",
-        },
+cloudinary.uploader.upload("https://res.cloudinary.com/demo/image/upload/sample.jpg", {
+        public_id: "prueba-directa"
+    })
+    .then(result => console.log("✅ Subida directa:", result.secure_url))
+    .catch(err => console.error("❌ Error subida directa:", err));
+
+function uploadToCloudinary(buffer, filename) {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream({
+                public_id: filename,
+                resource_type: 'auto',
+                timeout: 60000 // ⏱️ Aumentamos el tiempo a 60 segundos
+            },
+            (error, result) => {
+                if (error) reject(error);
+                else resolve(result.secure_url);
+            }
+        );
+
+        streamifier.createReadStream(buffer).pipe(stream);
     });
-
-    // Get the file's web links
-    const result = await drive.files.get({
-        fileId,
-        fields: "webViewLink, webContentLink",
-    });
-
-    // Return the webContentLink (direct download) or webViewLink (opens in Drive)
-    return result.data.webViewLink;
 }
 
-
 app.get('/', (req, res) => {
-    res.send('Servidor funcionando correctamente');
+    res.send('Servidor funcionando correctamente ayer');
 });
 
 app.post('/login', async (req, res) => {
@@ -211,7 +213,7 @@ app.post('/create', upload.any(), async (req, res) => {
 
         if (!name || !phone || !age || !email || !ide || !genre || !nationality || !area) {
             return res.status(400).json({
-                error: "Missing required fields"
+                error: "Missing required fields today"
             });
         }
 
@@ -282,7 +284,7 @@ app.post('/create', upload.any(), async (req, res) => {
             languagesRaw = Object.values(languagesRaw || {});
         }
 
-                // Parsear sólo si viene como string
+        // Parsear sólo si viene como string
         if (typeof skillsRaw === 'string') {
             try {
                 skillsRaw = JSON.parse(skillsRaw);
@@ -303,24 +305,7 @@ app.post('/create', upload.any(), async (req, res) => {
         // Procesar archivos generales (excluye los de estudios)
         for (const file of req.files) {
             if (!file.fieldname.startsWith('studies[')) {
-                const fileMetadata = {
-                    name: file.originalname,
-                    parents: [process.env.DRIVE_FOLDER_ID],
-                };
-
-                const media = {
-                    mimeType: file.mimetype,
-                    body: streamifier.createReadStream(file.buffer),
-                };
-
-                const response = await drive.files.create({
-                    resource: fileMetadata,
-                    media: media,
-                    fields: "id",
-                });
-
-                const fileId = response.data.id;
-                const publicUrl = await makeFilePublic(fileId);
+                const publicUrl = await uploadToCloudinary(file.buffer, file.originalname);
 
                 if (!uploadedFiles[file.fieldname]) {
                     uploadedFiles[file.fieldname] = [];
@@ -338,24 +323,7 @@ app.post('/create', upload.any(), async (req, res) => {
             let certUrl = null;
 
             if (certFile) {
-                const fileMetadata = {
-                    name: certFile.originalname,
-                    parents: [process.env.DRIVE_FOLDER_ID],
-                };
-
-                const media = {
-                    mimeType: certFile.mimetype,
-                    body: streamifier.createReadStream(certFile.buffer),
-                };
-
-                const response = await drive.files.create({
-                    resource: fileMetadata,
-                    media: media,
-                    fields: "id",
-                });
-
-                const fileId = response.data.id;
-                certUrl = await makeFilePublic(fileId);
+                certUrl = await uploadToCloudinary(certFile.buffer, certFile.originalname);
             }
 
             return {
@@ -400,8 +368,63 @@ app.post('/create', upload.any(), async (req, res) => {
     }
 });
 
+app.get('/employee', async (req, res) => {
+    try {
+        const employees = await Employees.find({}, {
+            name: 1,
+            "files.photo": 1,
+            _id: 0
+        });
+
+        const cleaned = employees.map(emp => {
+            // Si emp.files es un Map, usa .get()
+            const filesMap = emp.files instanceof Map ? emp.files : new Map(Object.entries(emp.files || {}));
+            const photoArray = filesMap.get("photo");
+            const rawUrl = photoArray?. [0]?.url || null;
+
+            let photoUrl = null;
+            if (rawUrl?.includes("drive.google.com")) {
+                const match = rawUrl.match(/\/d\/([^/]+)(?:\/|$)/);
+                if (match) {
+                    const fileId = match[1];
+                    photoUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                }
+            } else {
+                photoUrl = rawUrl;
+            }
+
+            return {
+                name: emp.name,
+                photoUrl
+            };
+        });
 
 
+        res.json(cleaned);
+    } catch (error) {
+        console.error("Error al obtener empleados:", error);
+        res.status(500).json({
+            error: 'Error al obtener empleados hoy',
+            message: error.message
+        });
+    }
+});
+
+
+
+app.get("/count", async (req, res) => {
+    try {
+        const total = await Employees.countDocuments();
+        res.json({
+            total
+        });
+    } catch (error) {
+        console.error('Error al contar documentos:', error);
+        res.status(500).json({
+            error: 'Error al contar documentos hoy'
+        });
+    }
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

@@ -13,7 +13,7 @@ export const routes: Routes = [
   { path: 'resumeMain', component: ResumeMainComponent },
   { path: 'createUser', component: CreateUserComponent },
   { path: 'stadistics', component: StadisticsComponent },
-  { path: 'resumeInfo', component: ResumeInfoComponent },
+  { path: 'resumeInfo/:name', component: ResumeInfoComponent },
   { path: 'statsInfo', component: StatsInfoComponent },
   { path: 'create', component: CreateComponent },
   { path: 'thanks', component: ThanksComponent },

@@ -16,7 +16,7 @@
             Estadístico</button>
     </div>
 </div>
-<h4 class="countMain animate__animated animate__fadeIn">Número de Empleados: <span id="docCount">Loading...</span></h4>
+<h4 class="countMain animate__animated animate__fadeIn">Número de Empleados: <span id="docCount">{{ totalEmployees }}</span></h4>
 
 <select class="typeMain animate__animated animate__fadeInUp " id="courseAC" required>
     <option>Todos los Empleados</option>
@@ -26,13 +26,13 @@
 </select><br>
 
 <ul class="list animate__animated animate__zoomIn animate__delay-1s">
-    <li *ngIf="" class="loading">Cargando reservas...</li>
-    <li *ngIf=""></li>
-    <li>
+    <li *ngIf="cargando" class="loading">Cargando reservas...</li>
+    <li *ngIf="error">{{ error }}</li>
+    <li *ngFor="let employee of employees">
         <div class="card">
-            <img src="https://picsum.photos/200" class="card-img-top" alt="error en imagen">
-            <p class="card-title">Example name</p>
-            <button class="buttonMain animate__animated animate__pulse animate__infinite" routerLink="/resumeInfo">Ver
+            <img [src]="employee.photoUrl" class="card-img-top" alt="Foto del empleado"><p>{{ employee.photoUrl }}</p>
+            <p class="card-title">{{employee.name}}</p>
+            <button class="buttonMain animate__animated animate__pulse animate__infinite" [routerLink]="['/resumeInfo', employee.name]">Ver
                 más</button>
         </div>
     </li>
