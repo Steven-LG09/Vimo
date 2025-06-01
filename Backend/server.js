@@ -2,9 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from 'cors';
 import mongoose from "mongoose";
-import {
-    v2 as cloudinary
-} from 'cloudinary';
+import ImageKit from "imagekit";
 import streamifier from "streamifier";
 import multer from "multer";
 
@@ -117,36 +115,33 @@ const upload = multer({
     storage: multer.memoryStorage()
 });
 
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-    secure: true
+const imagekit = new ImageKit({
+    publicKey: process.env.PUBLIC_KEY,
+    privateKey: process.env.PRIVATE_KEY,
+    urlEndpoint: process.env.URL_ENDPOINT,
 });
 
-
-cloudinary.uploader.upload("https://res.cloudinary.com/demo/image/upload/sample.jpg", {
-        public_id: "prueba-directa"
-    })
-    .then(result => console.log("✅ Subida directa:", result.secure_url))
-    .catch(err => console.error("❌ Error subida directa:", err));
-
-function uploadToCloudinary(buffer, filename) {
+async function uploadToImageKit(buffer, fileName) {
     return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream({
-                public_id: filename,
-                resource_type: 'auto',
-                timeout: 60000 // ⏱️ Aumentamos el tiempo a 60 segundos
+        imagekit.upload({
+                file: buffer, // puede ser Buffer, base64, o URL
+                fileName: fileName,
             },
-            (error, result) => {
-                if (error) reject(error);
-                else resolve(result.secure_url);
+            function (error, result) {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result.url); // devolvemos solo la URL
+                }
             }
         );
-
-        streamifier.createReadStream(buffer).pipe(stream);
     });
 }
+
+export default uploadToImageKit;
+
+
+
 
 app.get('/', (req, res) => {
     res.send('Servidor funcionando correctamente ayer');
@@ -213,7 +208,7 @@ app.post('/create', upload.any(), async (req, res) => {
 
         if (!name || !phone || !age || !email || !ide || !genre || !nationality || !area) {
             return res.status(400).json({
-                error: "Missing required fields today"
+                error: "Missing required fields"
             });
         }
 
@@ -222,119 +217,58 @@ app.post('/create', upload.any(), async (req, res) => {
         let languagesRaw = req.body.languages;
         let skillsRaw = req.body.skills;
 
-        // Parsear sólo si viene como string
-        if (typeof studiesRaw === 'string') {
-            try {
-                studiesRaw = JSON.parse(studiesRaw);
-            } catch (err) {
-                return res.status(400).json({
-                    error: 'Invalid studies format (JSON parse failed)'
-                });
-            }
-        }
+        if (typeof studiesRaw === 'string') studiesRaw = JSON.parse(studiesRaw);
+        if (!Array.isArray(studiesRaw)) studiesRaw = Object.values(studiesRaw || {});
+        if (!studiesRaw.length) return res.status(400).json({
+            error: 'At least one valid study is required'
+        });
 
-        // Convertir a array si no lo es (por si viene como objeto con keys numéricas)
-        if (!Array.isArray(studiesRaw)) {
-            studiesRaw = Object.values(studiesRaw || {});
-        }
+        if (typeof experiencesRaw === 'string') experiencesRaw = JSON.parse(experiencesRaw);
+        if (!Array.isArray(experiencesRaw)) experiencesRaw = Object.values(experiencesRaw || {});
+        if (!experiencesRaw.length) return res.status(400).json({
+            error: 'At least one valid experience is required'
+        });
 
-        // Validar que haya al menos un estudio
-        if (!studiesRaw.length) {
-            return res.status(400).json({
-                error: 'At least one valid study is required'
-            });
-        }
+        if (typeof languagesRaw === 'string') languagesRaw = JSON.parse(languagesRaw);
+        if (!Array.isArray(languagesRaw)) languagesRaw = Object.values(languagesRaw || {});
 
-        // Parsear sólo si viene como string
-        if (typeof experiencesRaw === 'string') {
-            try {
-                experiencesRaw = JSON.parse(experiencesRaw);
-            } catch (err) {
-                return res.status(400).json({
-                    error: 'Invalid experiences format (JSON parse failed)'
-                });
-            }
-        }
-
-        // Convertir a array si no lo es (por si viene como objeto con keys numéricas)
-        if (!Array.isArray(experiencesRaw)) {
-            experiencesRaw = Object.values(experiencesRaw || {});
-        }
-
-        // Validar que haya al menos un estudio
-        if (!experiencesRaw.length) {
-            return res.status(400).json({
-                error: 'At least one valid experience is required'
-            });
-        }
-
-        // Parsear sólo si viene como string
-        if (typeof languagesRaw === 'string') {
-            try {
-                languagesRaw = JSON.parse(languagesRaw);
-            } catch (err) {
-                return res.status(400).json({
-                    error: 'Invalid experiences format (JSON parse failed)'
-                });
-            }
-        }
-
-        // Convertir a array si no lo es (por si viene como objeto con keys numéricas)
-        if (!Array.isArray(languagesRaw)) {
-            languagesRaw = Object.values(languagesRaw || {});
-        }
-
-        // Parsear sólo si viene como string
-        if (typeof skillsRaw === 'string') {
-            try {
-                skillsRaw = JSON.parse(skillsRaw);
-            } catch (err) {
-                return res.status(400).json({
-                    error: 'Invalid experiences format (JSON parse failed)'
-                });
-            }
-        }
-
-        // Convertir a array si no lo es (por si viene como objeto con keys numéricas)
-        if (!Array.isArray(skillsRaw)) {
-            skillsRaw = Object.values(skillsRaw || {});
-        }
+        if (typeof skillsRaw === 'string') skillsRaw = JSON.parse(skillsRaw);
+        if (!Array.isArray(skillsRaw)) skillsRaw = Object.values(skillsRaw || {});
 
         const uploadedFiles = {};
 
-        // Procesar archivos generales (excluye los de estudios)
+        // Subir archivos generales (no estudios)
         for (const file of req.files) {
             if (!file.fieldname.startsWith('studies[')) {
-                const publicUrl = await uploadToCloudinary(file.buffer, file.originalname);
 
-                if (!uploadedFiles[file.fieldname]) {
-                    uploadedFiles[file.fieldname] = [];
-                }
+                const cloudUrl = await uploadToImageKit(file.buffer, file.originalname);
+                if (!uploadedFiles[file.fieldname]) uploadedFiles[file.fieldname] = [];
                 uploadedFiles[file.fieldname].push({
                     originalName: file.originalname,
-                    url: publicUrl
+                    url: cloudUrl,
                 });
+
             }
         }
 
-        // Procesar estudios y certificados asociados
+        // Subir certificados de estudios
         const studies = await Promise.all(studiesRaw.map(async (study, index) => {
             const certFile = req.files.find(f => f.fieldname === `studies[${index}][certificate]`);
             let certUrl = null;
 
             if (certFile) {
-                certUrl = await uploadToCloudinary(certFile.buffer, certFile.originalname);
+                certUrl = await uploadToImageKit(certFile.buffer, certFile.originalname);
+
             }
 
             return {
                 title: study.title,
                 type: study.type,
                 institution: study.institution,
-                certificate: certUrl
+                certificate: certUrl,
             };
         }));
 
-        // Guardar en base de datos
         const newEmployee = new Employees({
             name,
             phone,
@@ -346,7 +280,7 @@ app.post('/create', upload.any(), async (req, res) => {
             linkedin,
             area,
             files: uploadedFiles,
-            studies: studies,
+            studies,
             experiences: experiencesRaw,
             languages: languagesRaw,
             skills: skillsRaw
@@ -361,7 +295,7 @@ app.post('/create', upload.any(), async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Upload error:", error);
+        console.error("❌ Upload error:", error);
         res.status(500).json({
             message: "There's a problem"
         });
@@ -377,28 +311,14 @@ app.get('/employee', async (req, res) => {
         });
 
         const cleaned = employees.map(emp => {
-            // Si emp.files es un Map, usa .get()
-            const filesMap = emp.files instanceof Map ? emp.files : new Map(Object.entries(emp.files || {}));
-            const photoArray = filesMap.get("photo");
-            const rawUrl = photoArray?. [0]?.url || null;
-
-            let photoUrl = null;
-            if (rawUrl?.includes("drive.google.com")) {
-                const match = rawUrl.match(/\/d\/([^/]+)(?:\/|$)/);
-                if (match) {
-                    const fileId = match[1];
-                    photoUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
-                }
-            } else {
-                photoUrl = rawUrl;
-            }
+            const photoArray = emp.files?.get('photo');
+            const photoUrl = photoArray?. [0]?.url || null;
 
             return {
                 name: emp.name,
                 photoUrl
             };
         });
-
 
         res.json(cleaned);
     } catch (error) {
@@ -409,8 +329,6 @@ app.get('/employee', async (req, res) => {
         });
     }
 });
-
-
 
 app.get("/count", async (req, res) => {
     try {

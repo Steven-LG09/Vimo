@@ -28,6 +28,7 @@ export class ResumeMainComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.employees = data;
+          console.log(this.employees);
           this.cargando = false;
         },
         error: (err) => {
