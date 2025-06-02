@@ -1,80 +1,126 @@
 <h1 class="mainName animate__animated animate__fadeInDown">VIMO</h1>
 <p class="descrip animate__animated animate__fadeIn">Valor, Identidad, Meríto y Oportunidad</p>
 
-<div class="personalInfo2 animate__animated animate__zoomIn animate__delay-1s">
+<div *ngIf="cargando">Cargando datos...</div>
+
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<div class="personalInfo2 animate__animated animate__zoomIn" *ngIf="documento">
     <div class="photoH">
-        <img src="https://picsum.photos/200" alt="photo HDV" class="mainPhoto animate__animated animate__fadeIn">
+        <img [src]="documento.files?.photo?.[0]?.url" alt="photo HDV"
+            class="mainPhoto animate__animated animate__fadeIn">
     </div>
     <div class="contentInfo2">
         <h2 class="secondName2">Información Personal</h2>
         <div class="blockInfo">
             <p class="atribute">Nombre</p>
-            <p class="result">'No name'</p>
+            <p class="result">{{ documento.name }}</p>
         </div>
         <div class="blockInfo">
             <p class="atribute">Teléfono</p>
-            <p class="result">'No phone'</p>
+            <p class="result">{{ documento.phone }}</p>
         </div>
         <div class="blockInfo">
             <p class="atribute">Edad</p>
-            <p class="result">'No age'</p>
+            <p class="result">{{ documento.age }}</p>
         </div>
         <div class="blockInfo">
             <p class="atribute">Email</p>
-            <p class="results">'No email'</p>
+            <p class="results">{{ documento.email }}</p>
         </div>
         <div class="blockInfo">
             <p class="atribute">CC</p>
-            <p class="results"><a href="" target="_blank">'No CC'</a></p>
+            <p class="results"><a [href]="documento.files?.ide?.[0]?.url" target="_blank">{{ documento.ide }}</a></p>
         </div>
         <div class="blockInfo">
             <p class="atribute">Genero</p>
-            <p class="results">'No genre'</p>
+            <p class="results">{{ documento.genre }}</p>
         </div>
         <div class="blockInfo">
             <p class="atribute">Nacionalidad</p>
-            <p class="results">'No nationality'</p>
+            <p class="results">{{ documento.nationality }}</p>
         </div>
         <div class="blockInfo">
             <p class="atribute">LinkedIn</p>
-            <p class="results"><a href="#" onclick="checkLinkedIn(event, '${resume.linkedin}')">Profile</a></p>
+            <p class="results"><a href="#" (click)="abrirLinkedin(documento.linkedin, $event)">Profile</a>
+            </p>
         </div>
 
     </div>
 </div>
 
-<h2 class="secondName animate__animated animate__zoomIn animate__delay-1s">Formación Académica</h2>
-<div class="listGenere animate__animated animate__zoomIn animate__delay-1s">
-    <p>
-        "No studies
-        available"
-    </p>
-</div>
+<h2 class="secondName animate__animated animate__zoomIn">Formación Académica</h2>
+<ng-container *ngIf="documento">
+    <div class="listGenere animate__animated animate__zoomIn" *ngIf="documento.studies?.length > 0; else noStudies">
+        <div *ngFor="let study of documento.studies" class="listItem">
+            <p>Título como {{ study.title }}, de tipo {{ study.type }} y fue realizado en
+                {{ study.institution }}.</p>
+            <a [href]="study.certificate" target="_blank">Ver Certificado</a>
+        </div>
+    </div>
+</ng-container>
 
-<h2 class="secondName animate__animated animate__zoomIn animate__delay-1s">Experiencia Laboral</h2>
-<div class="listGenere animate__animated animate__zoomIn animate__delay-1s">
-    <p>
-        "No experience available"
-    </p>
-</div>
+<ng-template #noStudies>
+    <div class="listGenere animate__animated animate__zoomIn">
+        <p>"No studies available"</p>
+    </div>
+</ng-template>
+<br>
 
-<h2 class="secondName animate__animated animate__zoomIn animate__delay-1s">Idiomas</h2>
-<div class="listGenere animate__animated animate__zoomIn animate__delay-1s">
-    <p>
-        "No
-        languages available"
-    </p>
-</div>
+<h2 class="secondName animate__animated animate__zoomIn">Experiencia Laboral</h2>
+<ng-container *ngIf="documento">
+    <div class="listGenere animate__animated animate__zoomIn"
+        *ngIf="documento.experiences?.length > 0; else noExperiences">
+        <div *ngFor="let experience of documento.experiences" class="listItem2">
+            <p>He trabajado en {{ experience.company }}, del sector {{ experience.sector }},
+                ubicado en {{ experience.city }}, con teléfono {{ experience.telephone }},
+                durante {{ experience.time }} meses, con el cargo
+                {{ experience.role }} y con este contrato: {{ experience.contract }}.</p>
+        </div>
+    </div>
+</ng-container>
 
-<h2 class="secondName animate__animated animate__zoomIn animate__delay-1s">Habilidades Técnicas</h2>
-<div class="listGenere animate__animated animate__zoomIn animate__delay-1s">
-    <p>
-        "No skills available"
-    </p>
-</div>
+<ng-template #noExperiences>
+    <div class="listGenere animate__animated animate__zoomIn">
+        <p>"No experiences available"</p>
+    </div>
+</ng-template>
+<br>
 
-<h2 class="secondName animate__animated animate__zoomIn animate__delay-1s">Firma</h2>
-<div class="listGenere animate__animated animate__zoomIn animate__delay-1s"><a href="${resume.signature || '#'}"
-        target="_blank">Firma digital</a></div>
+<h2 class="secondName animate__animated animate__zoomIn">Idiomas</h2>
+<ng-container *ngIf="documento">
+    <div class="listGenere animate__animated animate__zoomIn" *ngIf="documento.languages?.length > 0; else noLanguages">
+        <div *ngFor="let language of documento.languages" class="listItem">
+            <p> Se hablar {{ language.language }} en el nivel {{ language.languageLevel }}.</p>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #noLanguages>
+    <div class="listGenere animate__animated animate__zoomIn">
+        <p>"No languages available"</p>
+    </div>
+</ng-template>
+<br>
+
+<h2 class="secondName animate__animated animate__zoomIn">Habilidades Técnicas</h2>
+<ng-container *ngIf="documento">
+    <div class="listGenere animate__animated animate__zoomIn" *ngIf="documento.skills?.length > 0; else noSkills">
+        <div *ngFor="let skill of documento.skills" class="listItem">
+            <p>{{ skill.skill }} en el nivel {{ skill.skillLevel }}.</p>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #noSkills>
+    <div class="listGenere animate__animated animate__zoomIn">
+        <p>"No skills available"</p>
+    </div>
+</ng-template>
+<br>
+
+<h2 class="secondName animate__animated animate__zoomIn">Firma</h2>
+<div class="listGenere animate__animated animate__zoomIn" *ngIf="documento">
+    <a [href]="documento.files?.signature?.[0]?.url" target="_blank">Firma digital</a></div>
 <br>
 <button class="deleteBu animate__animated animate__pulse animate__infinite">Eliminar Hoja de Vida</button>

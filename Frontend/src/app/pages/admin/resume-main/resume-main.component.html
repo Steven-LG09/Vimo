@@ -19,7 +19,8 @@
 <h4 class="countMain animate__animated animate__fadeIn">Número de Empleados: <span id="docCount">{{ totalEmployees
         }}</span></h4>
 
-<select class="typeMain animate__animated animate__fadeInUp " id="courseAC" required>
+<select class="typeMain animate__animated animate__fadeInUp " id="courseAC" required
+    (change)="filtrarPorPrograma($event)">
     <option>Todos los Empleados</option>
     <option>Administración</option>
     <option>Producción</option>

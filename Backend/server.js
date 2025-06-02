@@ -304,7 +304,16 @@ app.post('/create', upload.any(), async (req, res) => {
 
 app.get('/employee', async (req, res) => {
     try {
-        const employees = await Employees.find({}, {
+        const {
+            area
+        } = req.query;
+
+        // Aplica el filtro si se envía un area específico
+        const filter = area && area !== "Todos los Empleados" ? {
+            area
+        } : {};
+
+        const employees = await Employees.find(filter, {
             name: 1,
             "files.photo": 1,
             _id: 0
@@ -320,11 +329,17 @@ app.get('/employee', async (req, res) => {
             };
         });
 
+        if (cleaned.length === 0) {
+            return res.status(404).json({
+                message: "No employees found"
+            });
+        }
+
         res.json(cleaned);
     } catch (error) {
         console.error("Error al obtener empleados:", error);
         res.status(500).json({
-            error: 'Error al obtener empleados hoy',
+            error: 'Error al obtener empleados',
             message: error.message
         });
     }
@@ -332,14 +347,48 @@ app.get('/employee', async (req, res) => {
 
 app.get("/count", async (req, res) => {
     try {
-        const total = await Employees.countDocuments();
+        const {
+            area
+        } = req.query;
+        const filter = area && area !== "Todos los Empleados" ? {
+            area
+        } : {};
+
+        const total = await Employees.countDocuments(filter);
         res.json({
             total
         });
     } catch (error) {
-        console.error('Error al contar documentos:', error);
+        console.error("Error al contar empleados:", error);
         res.status(500).json({
-            error: 'Error al contar documentos hoy'
+            error: "Error al contar empleados"
+        });
+    }
+});
+
+app.get('/info', async (req, res) => {
+    try {
+        const name = req.query.name;
+
+        // Buscar en la primera colección
+        let documento = await Employees.findOne({
+            name
+        });
+
+        // Si aún no se encuentra, devolver 404
+        if (!documento) {
+            return res.status(404).json({
+                error: 'No encontrado en ninguna colección'
+            });
+        }
+
+        // Si se encuentra en alguna, devolverlo
+        res.json(documento);
+
+    } catch (err) {
+        console.error('Error en búsqueda:', err);
+        res.status(500).json({
+            error: 'Error en la búsqueda'
         });
     }
 });

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,40 +14,58 @@ export class ResumeMainComponent implements OnInit {
   employees: any[] = [];
   cargando = true;
   error = '';
-  totalEmployees = 0; // Nueva propiedad para almacenar el total
+  totalEmployees = 0;
+  selectedArea = 'Todos los Empleados';
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.obtenerEmployees();
-    this.obtenerConteoEmployees(); // Llama la función para contar
+    this.obtenerConteoEmployees();
   }
 
-  obtenerEmployees() {
-    this.http.get<any[]>('http://localhost:4000/employee')
-      .subscribe({
-        next: (data) => {
-          this.employees = data;
-          console.log(this.employees);
-          this.cargando = false;
-        },
-        error: (err) => {
-          console.error('Error al obtener los empleados:', err);
-          this.error = 'No se encontraron empleados.';
-          this.cargando = false;
-        }
-      });
+  obtenerEmployees(area: string = 'Todos los Empleados') {
+    const params = area !== 'Todos los Empleados' ? new HttpParams().set('area', area) : undefined;
+
+    this.http.get<any[]>('http://localhost:4000/employee', {
+      params,
+      responseType: 'json' as const
+    }).subscribe({
+      next: (data) => {
+        this.employees = data;
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al obtener los empleados:', err);
+        this.error = 'No se encontraron empleados.';
+        this.cargando = false;
+      }
+    });
   }
 
-  obtenerConteoEmployees() {
-    this.http.get<{ total: number }>('http://localhost:4000/count')
-      .subscribe({
-        next: (data) => {
-          this.totalEmployees = data.total;
-        },
-        error: (err) => {
-          console.error('Error al contar los empleados:', err);
-        }
-      });
+  obtenerConteoEmployees(area: string = 'Todos los Empleados') {
+    const params = area !== 'Todos los Empleados' ? new HttpParams().set('area', area) : undefined;
+
+    this.http.get<{ total: number }>('http://localhost:4000/count', {
+      params,
+      responseType: 'json' as const
+    }).subscribe({
+      next: (data) => {
+        this.totalEmployees = data.total;
+      },
+      error: (err) => {
+        console.error('Error al contar los empleados:', err);
+      }
+    });
+  }
+
+  filtrarPorPrograma(event: Event) {
+    const selectedValue = (event.target as HTMLSelectElement).value;
+    this.selectedArea = selectedValue;
+    this.cargando = true;
+
+    this.obtenerEmployees(selectedValue);
+    this.obtenerConteoEmployees(selectedValue);
   }
 }
+
