@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import cors from 'cors';
 import mongoose from "mongoose";
 import ImageKit from "imagekit";
-import streamifier from "streamifier";
 import multer from "multer";
 
 dotenv.config();
@@ -391,6 +390,19 @@ app.get('/info', async (req, res) => {
             error: 'Error en la búsqueda'
         });
     }
+});
+
+app.get('/stats/:tipo', async (req, res) => {
+  const { tipo } = req.params;
+
+  try {
+    // Solo devuelve el campo solicitado, sin _id
+    const datos = await Employees.find({}, { [tipo]: 1, _id: 0 });
+    res.json(datos);
+  } catch (error) {
+    console.error('Error al consultar MongoDB:', error);
+    res.status(500).json({ error: 'Error al consultar datos' });
+  }
 });
 
 app.listen(PORT, () => {

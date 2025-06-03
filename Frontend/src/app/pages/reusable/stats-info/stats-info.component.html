@@ -7,3 +7,27 @@
     <option>Producción</option>
     <option>Calidad</option>
 </select>
+
+<h2>Estadísticas de {{ tipo }}</h2>
+
+<!-- Tabla -->
+<table class="table" *ngIf="datos.length > 0">
+  <thead>
+    <tr>
+      <th>{{ tipo }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of datos">
+      <td>{{ item[tipo] }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Gráfica -->
+<div *ngIf="chartData.labels && chartData.labels.length > 0">
+  <canvas baseChart
+    [data]="chartData"
+    [type]="chartType">
+  </canvas>
+</div>
