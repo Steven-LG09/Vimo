@@ -8,5 +8,13 @@ import { RouterModule } from '@angular/router';
   styleUrl: './stadistics.component.css'
 })
 export class StadisticsComponent {
-
+  Edad: string = 'age';
+  Genero: string = 'genre';
+  Nacionalidad: string = 'nationality';
+  Estudios: string = 'type';
+  Institucion: string = 'institution';
+  Experiencia: string = 'time';
+  Sector: string = 'sector';
+  Cargo: string = 'role';
+  Idioma: string = 'language';
 }

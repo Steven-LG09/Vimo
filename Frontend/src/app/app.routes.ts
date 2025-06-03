@@ -14,7 +14,7 @@ export const routes: Routes = [
   { path: 'createUser', component: CreateUserComponent },
   { path: 'stadistics', component: StadisticsComponent },
   { path: 'resumeInfo/:name', component: ResumeInfoComponent },
-  { path: 'statsInfo', component: StatsInfoComponent },
+  { path: 'statsInfo/:type', component: StatsInfoComponent },
   { path: 'create', component: CreateComponent },
   { path: 'thanks', component: ThanksComponent },
 ];
