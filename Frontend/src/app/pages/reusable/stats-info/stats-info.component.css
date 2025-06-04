@@ -26,3 +26,45 @@
     text-align: center;
     margin: 0 auto;
 }
+
+.stats-container {
+    padding: 2rem;
+}
+
+.stats-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: bold;
+    color: #0D3B66;
+    text-shadow: 3px 3px 5px #7fa9b9;
+}
+
+.chart-wrapper {
+    width: 90%;
+    margin: 0 auto 2rem auto;
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    box-shadow: 0 12px 16px 0 black, 0 17px 50px 0 #4F959D;
+}
+
+.stats-table th,
+.stats-table td {
+    border: 1px solid #4F959D;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.stats-table th {
+    background-color: #7fa9b9;
+    font-weight: bold;
+}
+
+.no-data-message {
+    margin-top: 2rem;
+    text-align: center;
+    color: #0D3B66;
+}

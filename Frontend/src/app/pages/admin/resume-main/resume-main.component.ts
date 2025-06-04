@@ -27,7 +27,7 @@ export class ResumeMainComponent implements OnInit {
   obtenerEmployees(area: string = 'Todos los Empleados') {
     const params = area !== 'Todos los Empleados' ? new HttpParams().set('area', area) : undefined;
 
-    this.http.get<any[]>('http://localhost:4000/employee', {
+    this.http.get<any[]>('https://vimo.koyeb.app/employee', {
       params,
       responseType: 'json' as const
     }).subscribe({
@@ -46,7 +46,7 @@ export class ResumeMainComponent implements OnInit {
   obtenerConteoEmployees(area: string = 'Todos los Empleados') {
     const params = area !== 'Todos los Empleados' ? new HttpParams().set('area', area) : undefined;
 
-    this.http.get<{ total: number }>('http://localhost:4000/count', {
+    this.http.get<{ total: number }>('https://vimo.koyeb.app/count', {
       params,
       responseType: 'json' as const
     }).subscribe({

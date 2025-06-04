@@ -2,32 +2,45 @@
 <p class="descrip animate__animated animate__zoomIn">Valor, Identidad, Meríto y Oportunidad</p>
 
 <select class="typeMain animate__animated animate__fadeInUp " id="courseAC" required>
-    <option>Todos los Empleados</option>
-    <option>Administración</option>
-    <option>Producción</option>
-    <option>Calidad</option>
+  <option>Todos los Empleados</option>
+  <option>Administración</option>
+  <option>Producción</option>
+  <option>Calidad</option>
 </select>
 
-<h2>Estadísticas de {{ tipo }}</h2>
+<div class="stats-container">
 
-<!-- Tabla -->
-<table class="table" *ngIf="datos.length > 0">
-  <thead>
-    <tr>
-      <th>{{ tipo }}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of datos">
-      <td>{{ item[tipo] }}</td>
-    </tr>
-  </tbody>
-</table>
+  <h2 class="stats-title animate__animated animate__zoomIn">Estadística de {{ traducciones[tipo] || tipo }}</h2>
 
-<!-- Gráfica -->
-<div *ngIf="chartData.labels && chartData.labels.length > 0">
-  <canvas baseChart
-    [data]="chartData"
-    [type]="chartType">
-  </canvas>
+  <!-- Tabla de resultados -->
+  <table *ngIf="tablaDatos.length > 0" class="stats-table animate__animated animate__zoomIn">
+    <thead>
+      <tr>
+        <th>Valor</th>
+        <th>Cantidad</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let fila of tablaDatos">
+        <td>{{ fila.valor }}</td>
+        <td>{{ fila.cantidad }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <br><br>
+  
+  <!-- Gráfica -->
+  <div class="chart-wrapper">
+    <canvas baseChart
+      [data]="chartData"
+      [type]="chartType"
+      [options]="chartOptions">
+    </canvas>
+  </div>
+
+  <!-- Mensaje si no hay datos -->
+  <div *ngIf="tablaDatos.length === 0" class="no-data-message">
+    No se encontraron datos para esta estadística.
+  </div>
+
 </div>

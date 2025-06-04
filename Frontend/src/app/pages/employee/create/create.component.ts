@@ -382,7 +382,7 @@ export class CreateComponent {
     this.loadingMessage = true;
 
     // Enviamos una petición POST al backend con los datos
-    this.http.post<any>('http://localhost:4000/create', uploadData).subscribe({
+    this.http.post<any>('https://vimo.koyeb.app/create', uploadData).subscribe({
       next: (result) => {
         // Ocultamos el mensaje de carga
         this.loadingMessage = false;

@@ -140,8 +140,6 @@ async function uploadToImageKit(buffer, fileName) {
 export default uploadToImageKit;
 
 
-
-
 app.get('/', (req, res) => {
     res.send('Servidor funcionando correctamente ayer');
 });
@@ -393,16 +391,55 @@ app.get('/info', async (req, res) => {
 });
 
 app.get('/stats/:tipo', async (req, res) => {
-  const { tipo } = req.params;
+    const {
+        tipo
+    } = req.params;
 
-  try {
-    // Solo devuelve el campo solicitado, sin _id
-    const datos = await Employees.find({}, { [tipo]: 1, _id: 0 });
-    res.json(datos);
-  } catch (error) {
-    console.error('Error al consultar MongoDB:', error);
-    res.status(500).json({ error: 'Error al consultar datos' });
-  }
+    try {
+        const usuarios = await Employees.find({});
+
+        let resultados = [];
+
+        if (tipo.includes('.')) {
+            const [arrayField, subField] = tipo.split('.');
+
+            for (const usuario of usuarios) {
+                const array = usuario[arrayField];
+
+                if (Array.isArray(array)) {
+                    for (const item of array) {
+                        if (item && item[subField]) {
+                            resultados.push({
+                                [subField]: item[subField]
+                            });
+                        } else {
+                            console.log(`⚠️ Subcampo '${subField}' no encontrado en item.`);
+                        }
+                    }
+                } else {
+                    console.log(`❌ El campo '${arrayField}' no es un array en el usuario ${usuario.nombre}`);
+                }
+            }
+
+        } else {
+            for (const usuario of usuarios) {
+                if (usuario[tipo]) {
+                    resultados.push({
+                        [tipo]: usuario[tipo]
+                    });
+                } else {
+                    console.log(`⚠️ El campo '${tipo}' no existe en el usuario ${usuario.nombre}`);
+                }
+            }
+        }
+
+        res.json(resultados);
+    } catch (error) {
+        console.error('❌ Error en la solicitud:', error);
+        res.status(500).json({
+            error: 'Error al obtener los datos'
+        });
+    }
 });
 
 app.listen(PORT, () => {

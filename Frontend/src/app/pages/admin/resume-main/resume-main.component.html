@@ -27,7 +27,7 @@
     <option>Calidad</option>
 </select><br>
 
-<ul class="list animate__animated animate__zoomIn animate__delay-1s">
+<ul class="list animate__animated animate__zoomIn">
     <li *ngIf="cargando" class="loading">Cargando reservas...</li>
     <li *ngIf="error">{{ error }}</li>
     <li *ngFor="let employee of employees">

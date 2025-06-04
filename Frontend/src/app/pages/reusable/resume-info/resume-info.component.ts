@@ -35,7 +35,7 @@ export class ResumeInfoComponent implements OnInit {
   ngOnInit(): void {
     this.nombre = this.route.snapshot.paramMap.get('name') || '';
 
-    this.http.get<any>('http://localhost:4000/info', {
+    this.http.get<any>('https://vimo.koyeb.app/info', {
       params: { name: this.nombre }
     })
       .subscribe({

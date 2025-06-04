@@ -35,7 +35,7 @@ export class LoginComponent {
     this.loadingMessage = true;
 
     // Enviamos una petición POST al backend con los datos
-    this.http.post<any>('http://localhost:4000/login', {
+    this.http.post<any>('https://vimo.koyeb.app/login', {
       user: User,
       password: Password,
     }).subscribe({
