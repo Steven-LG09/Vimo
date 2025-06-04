@@ -2,13 +2,17 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { NgChartsModule, BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartType, ChartOptions } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartConfiguration, ChartType, ChartOptions, Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
+
+// Register Chart.js components here
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+
 
 @Component({
   standalone: true,
   selector: 'app-stats-info',
-  imports: [HttpClientModule, NgChartsModule, CommonModule],
+  imports: [HttpClientModule, BaseChartDirective, CommonModule],
   templateUrl: './stats-info.component.html',
   styleUrl: './stats-info.component.css'
 })
